@@ -120,16 +120,20 @@ also there is already a command called kill by defualt so don't just copy and pa
 ### FAQ
 
 Q: i've found a bug; how can i report it?
+
 A: you can send me a DM on the devforums or roblox, or just contact me through the group wall of one of my groups :)
 
 Q: im getting a message saying my loader won't be compatable with fastr soon, what do i do?
+
 A: this means that you have an old version of fastr, so you can do 3 things: 1. migrate you current version of fastr over to a newer version 2. stick with your current version to 
 see if a new update will break your installation 3. go to the loader script and change the UPDATE_CHANNEL variable to "COMPATABILITY".
 
 Q: im getting a message saying that my version of fastr is old and won't work anymore. WHAT DO I DO???
+
 A: save as the question above, except you obviously can't do number 2.
 
 Q: i don't want to have have updates, is there any way i can not get them?
+
 A: yes, there is. use the source version of Fastr. this version wont update, but it is a bit more complicated to use.
 
 ### Menu Widgets
