@@ -1,4 +1,4 @@
-#Fastr
+# Fastr
 
 Thankyou for choosing Fastr as your admin system!
 this file was written to teach you how to use fastr.
