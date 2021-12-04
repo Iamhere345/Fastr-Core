@@ -18,3 +18,4 @@ end
 game.Players.PlayerAdded:Connect(function(player) --some players woll join after fastr has loaded and already looped through the existing players
 	TextCommandsSetup(player)
 end)
+ 
