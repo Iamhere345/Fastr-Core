@@ -1,4 +1,4 @@
-#Fastr
+###### Fastr
 
 Thankyou for choosing Fastr as your admin system!
 this file was written to teach you how to use fastr.
@@ -6,7 +6,7 @@ this file was written to teach you how to use fastr.
 I am not responsible for any harm or moderation action caused by commands that you make or commands that have been
 modifyed by you. if any of that stuff does happen, thats on you.
 
-#Installation
+### Installation
 
 if you are using the loader version of fastr:
 
@@ -21,7 +21,7 @@ fastr will install automatically every time you start the game, but if you dont 
 3. put Fastr_Remotes in ReplicatedStorage
 4. put Fastr_UI in starterGui
 
-#Configuring
+### Configuring
 
 to configure fastr, open the settings module.
 
@@ -40,7 +40,7 @@ randon string of numbers and letters
 [Prefix]: this is what you put at the start of a command. by default it is ":", so if you wanted to use the fly command, you would have to say :fly.
 you can change this to whatever you want (except characters like " or ' or %).
 
-#Making Commands
+### Making Commands
 
 prerequsites: knowledge of luau
 
@@ -103,13 +103,13 @@ Commands.kill = {
 				target.CharacterAdded:Wait()
 				target.Character:WaitForChild("Humanoid"):TakeDamage(100)
 			end
-		end
+	        end
 	end
 }
 
 also there is already a command called kill by defualt so don't just copy and paste this lol.
 
-#FAQ
+### FAQ
 
 Q: i've found a bug; how can i report it?
 A: you can send me a DM on the devforums or roblox, or just contact me through the group wall of one of my groups :)
@@ -124,7 +124,7 @@ A: save as the question above, except you obviously can't do number 2.
 Q: i don't want to have have updates, is there any way i can not get them?
 A: yes, there is. use the source version of Fastr. this version wont update, but it is a bit more complicated to use.
 
-#Menu Widgets
+### Menu Widgets
 
 as of fastr version 0.63 you can now create your own widgets for the menu (which was also introduced in 0.63)!
 
