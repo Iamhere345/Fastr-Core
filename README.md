@@ -26,19 +26,19 @@ fastr will install automatically every time you start the game, but if you dont 
 
 to configure fastr, open the settings module.
 
-[Ranks]: the table called ranks is for checking if a player has the correct permissions to use a command.
+Ranks: the table called ranks is for checking if a player has the correct permissions to use a command.
 example: say you want your friend (whose name happens to be builderman) to have the permission level 1 in your game you would add this to the table:
 
 {"Builderman",1} OR {156,1}
 
-[Group ranks]: this is like the ranks table, but for groups.
+Group ranks: this is like the ranks table, but for groups.
 e.g: you have a group with the id 1337, and you want people with the rank 250 to have the permission level 1.5:
 {1337,250,1.5}
 
-[Key]: this is the "password" that fastr saves your data with. to make sure that your game is secure and players can't unban themselves, you should change it to a
+Key: this is the "password" that fastr saves your data with. to make sure that your game is secure and players can't unban themselves, you should change it to a
 randon string of numbers and letters
 
-[Prefix]: this is what you put at the start of a command. by default it is ":", so if you wanted to use the fly command, you would have to say :fly.
+Prefix: this is what you put at the start of a command. by default it is ":", so if you wanted to use the fly command, you would have to say :fly.
 you can change this to whatever you want (except characters like " or ' or %).
 
 ### Making Commands
@@ -48,6 +48,7 @@ prerequsites: knowledge of luau
 to make a command, you must add a table to the commands module script.
 command template:
 
+'''lua
 Commands.(command name goes here) = {
 	Name = "",
 	Desc = "",
@@ -59,7 +60,7 @@ Commands.(command name goes here) = {
 		
 	end
 }
-
+'''
 Name: this is for the :cmds command and the lexer to identify your command. make sure it is the same as the name you have used in the module (although).
 another IMPORTANT thing to note is that the name you are using for the commands.(command name) is IT MUST BE ALL LOWERCASE, otherwise the user cannot call it.
 
@@ -86,6 +87,7 @@ Run: this is the actual function where you put your code. it has three arguments
 	
 example command:
 
+'''lua
 Commands.kill = {
 	Name = "kill",
 	Desc = "kills the target player",
@@ -107,7 +109,7 @@ Commands.kill = {
 	        end
 	end
 }
-
+'''
 also there is already a command called kill by defualt so don't just copy and paste this lol.
 
 ### FAQ
