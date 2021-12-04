@@ -1,6 +1,7 @@
 # Fastr
 
-Thankyou for choosing Fastr as your admin system!
+if you would like to download fastr, either download the model included in this repo or download it from roblox
+
 this file was written to teach you how to use fastr.
 
 I am not responsible for any harm or moderation action caused by commands that you make or commands that have been
