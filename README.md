@@ -48,7 +48,8 @@ prerequsites: knowledge of luau
 to make a command, you must add a table to the commands module script.
 command template:
 
-'''lua
+```lua
+
 Commands.(command name goes here) = {
 	Name = "",
 	Desc = "",
@@ -60,7 +61,9 @@ Commands.(command name goes here) = {
 		
 	end
 }
-'''
+
+```
+
 Name: this is for the :cmds command and the lexer to identify your command. make sure it is the same as the name you have used in the module (although).
 another IMPORTANT thing to note is that the name you are using for the commands.(command name) is IT MUST BE ALL LOWERCASE, otherwise the user cannot call it.
 
@@ -87,7 +90,7 @@ Run: this is the actual function where you put your code. it has three arguments
 	
 example command:
 
-'''lua
+```lua
 Commands.kill = {
 	Name = "kill",
 	Desc = "kills the target player",
@@ -109,7 +112,7 @@ Commands.kill = {
 	        end
 	end
 }
-'''
+```
 also there is already a command called kill by defualt so don't just copy and paste this lol.
 
 ### FAQ
