@@ -1,5 +1,5 @@
 local Core_Commands = {}
---this script contains all of the core commands for fastr. there is no official support to change these commands. soon there may be a setting to change them tho.
+--this script contains all of the core commands for fastr. there is no official support to change these commands on the loader version, as you cannot add/modify commandsmat runtime. soon there may be a setting to change them tho.
 local Fastr = script.Parent.Parent.Parent
 
 local ArgLib = require(Fastr:WaitForChild("Lib"):WaitForChild("ArgLib"))
