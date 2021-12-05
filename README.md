@@ -2,12 +2,15 @@
 
 This repo is a work in progress. i am still importing some of the scripts over to github
 
-if you would like to download fastr, either download the model included in this repo or download it from roblox
-
 this file was written to teach you how to use fastr.
 
 I am not responsible for any harm or moderation action caused by commands that you make or commands that have been
 modifyed by you. if any of that stuff does happen, thats on you.
+
+### Download
+
+Source Version: https://web.roblox.com/library/7768369303/
+Loader Version: https://web.roblox.com/library/7981503602/
 
 ### Installation
 
