@@ -1,4 +1,4 @@
-local ArgUtils = {}
+local ArgLib = {}
 --these functions are called whenever a player uses the corresponding argument
 local Fastr = script.Parent.Parent
 local UIUtils = require(Fastr:WaitForChild("Utils"):WaitForChild("UIUtils"))
@@ -172,4 +172,4 @@ ArgUtils.team = function(player,args,Command)
 	
 end
 
-return ArgUtils
+return ArgLib
