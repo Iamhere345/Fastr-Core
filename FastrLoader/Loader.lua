@@ -1,7 +1,7 @@
 --this is the exprirmental loader for fastr admin
 
 local channels = { --other channels coming soon
-	["STABLE"] = --[[7981493975--]]game.Workspace.MainModule,
+	["STABLE"] = 7981493975,
 	["UNSTABLE"] = 0000,
 	["EXPERIMENTAL"] = 0000,
 	["COMPATABILITY"] = 0000
