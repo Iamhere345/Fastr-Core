@@ -20,4 +20,31 @@ MiscUtils.CompileCommands = function(Root)
 	
 end
 
+MiscUtils.CompileMods = function(CmdTable)
+	
+	local fnMods = {
+		["all"] = {"all","me","others","random","randother","team","player"},
+		["standard"] = {"all","me","others",},
+	}
+	
+	local function GetFnMods(key,modTable)
+		
+		for _,mod in ipairs(fnMods[key]) do
+			table.insert(modTable,mod)	
+		end
+		
+	end
+	
+	for _,cmd in pairs(CmdTable) do
+		if cmd.Modifyers then
+			for x,mod in pairs(cmd.Modifyers) do
+				if fnMods[mod] then
+					GetFnMods(mod,cmd.Modifyers)
+				end
+			end
+		end
+	end
+	
+end
+
 return MiscUtils
