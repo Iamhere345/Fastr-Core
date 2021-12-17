@@ -32,8 +32,6 @@ MainModule.Initialise = function(root,Loaderversion)
 
 		if Settings.SoftLoad == true then
 
-			game.Loaded:Wait()
-
 			local Cmds = script.FastrPackage.Fastr_Main.Core.Commands
 			local Resources = script.FastrPackage.Fastr_Main.Resources
 			local Remotes = script.FastrPackage.Fastr_Remotes
