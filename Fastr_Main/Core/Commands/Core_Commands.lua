@@ -1,5 +1,5 @@
 local Core_Commands = {}
---this script contains all of the core commands for fastr. there is no official support to change these commands on the loader version, as you cannot add/modify commandsmat runtime. soon there may be a setting to change them tho.
+--this script contains all of the core commands for fastr. there is no official support to change these commands. soon there may be a setting to change them tho.
 local Fastr = script.Parent.Parent.Parent
 
 local ArgLib = require(Fastr:WaitForChild("Lib"):WaitForChild("ArgLib"))
@@ -17,7 +17,7 @@ Core_Commands.cmds = {
 	Usage = ":cmds",
 	PermissionLevel = 0,
 	Aliases = {"Help","Commands"},
-	Run = function(player,args)
+	Run = function(player,target,args)
 		remotes.OpenMenu:FireClient(player,"Commands")
 	end,
 }
@@ -158,7 +158,10 @@ Core_Commands.createteam = {
 	Run = function(player,target,args)
 		if args[1] then
 			local team = Instance.new("Team",game.Teams)
-			team.Name = args[1]
+			
+			local TeamName = game:GetService("Chat"):FilterStringForBroadcast(args[1],player)
+			
+			team.Name = TeamName
 
 			if args[2] then
 				
@@ -198,7 +201,16 @@ Core_Commands.tp = {
 	Aliases = {"teleport"},
 	Run = function(player,target,args) --please remember that target is args[1], which means you cannot do :tp <player> all
 		target.Character.Humanoid:ChangeState(Enum.HumanoidStateType.None)
-		target.Character.HumanoidRootPart.CFrame = ArgLib.ShortendPlayerName(player,args[2]).Character.HumanoidRootPart.CFrame + player.Character.HumanoidRootPart.CFrame.LookVector * 2
+		
+		local targets = ArgLib.CheckMod(player,args[2],args)
+		
+		if targets then
+			for _,t in pairs(targets) do
+				target.Character.HumanoidRootPart.CFrame = t.Character.HumanoidRootPart.CFrame + player.Character.HumanoidRootPart.CFrame.LookVector * 2
+			end
+		elseif ArgLib.player(player,args[2]) then
+			target.Character.HumanoidRootPart.CFrame = ArgLib.Player(player,args[2])[1].Character.HumanoidRootPart.CFrame + player.Character.HumanoidRootPart.CFrame.LookVector * 2
+		end
 	end,
 }
 
