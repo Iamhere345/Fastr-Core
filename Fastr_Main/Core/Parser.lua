@@ -1,18 +1,22 @@
 local Parser = {}
 --this script parses commands and also compiles stuff from settings
+
+--//instances
 local Fastr = script.Parent.Parent
+--//dependencies
 local CommandsFolder = Fastr:WaitForChild("Core").Commands
 local ArgLib = require(Fastr:WaitForChild("Lib"):WaitForChild("ArgLib"))
-local MiscUtils = require(Fastr.Utils.MiscUtils)
+local MiscUtils = require(Fastr:WaitForChild("Utils").MiscUtils)
 local UIUtils = require(Fastr:WaitForChild("Utils"):WaitForChild("UIUtils"))
 local Settings = require(Fastr:WaitForChild("Settings"))
+--//settings
 local Ranks = Settings.Ranks
 local GroupRanks = Settings.GroupRanks
 local prefix = Settings.Prefix
 
 local Commands = MiscUtils.CompileCommands(CommandsFolder)
 
-local function GetPermissionLevel(player)
+local function GetPermissionLevel(player) --gets a players permission level. it loops through the ranks table and if it finds the players userid or name as the first value it will return the second value. otherwise it will return 0
 	for i,v in pairs(Ranks) do
 		if v[1] == player.UserId or v[1] == player.Name then
 			return v[2]
@@ -21,23 +25,23 @@ local function GetPermissionLevel(player)
 	return 0
 end
 
-local function CheckGroupPerms(player)
+local function CheckGroupPerms(player) --converts a players value in the group ranks table to a normal rank
 	for i,v in pairs(GroupRanks) do
 		if player:IsInGroup(v[1]) then
-			if player:GetRankInGroup(v[1]) == v[2] then
+			if player:GetRankInGroup(v[1]) == v[2] and GetPermissionLevel(player) == 0 then
 				table.insert(Ranks,{player.UserId,v[2]})
 			end
 		end
 	end
 end
 
-local function GetDefaultRank(player)
+local function GetDefaultRank(player) --changes all the rank of all players who don't have a rank to the default rank
 	if GetPermissionLevel(player) == 0 then
 		table.insert(Ranks,{player.UserId,Settings.DefaultRank})
 	end
 end
 
-local function IsValidCommand(cmd)
+local function IsValidCommand(cmd) --checks if a command is in the commands table
 	if Commands[string.lower(cmd)] then
 		return true
 	else
@@ -45,7 +49,7 @@ local function IsValidCommand(cmd)
 	end
 end
 
-local function IsValidAliase(cmd)
+local function IsValidAliase(cmd) --checks if the command the player has said is an aliase of a command
 	for _,command in pairs(Commands) do
 		if command.Aliases then
 			for i,a in ipairs(command.Aliases) do
@@ -56,15 +60,6 @@ local function IsValidAliase(cmd)
 		end
 	end
 	return nil
-end
-
-local function CheckMods(mod)
-	for i,v in pairs(ArgLib) do
-		if v == mod then
-			return true
-		end
-	end
-	return false
 end
 
 Parser.ParseCmd = function(player,msg,UsingPrefix)
@@ -97,30 +92,41 @@ Parser.ParseCmd = function(player,msg,UsingPrefix)
 
 
 		if command.PermissionLevel <= rank then
+			
 			if Modifyers then
+				
+				if table.find(Modifyers,args[1]) then
+					
+					if ArgLib[args[1]] and args[1] ~= "player" then
 
-				local HasFoundModifyer = false
+						local targets = ArgLib.CheckMod(player,args[1],args)
 
-				for i,v in pairs(Modifyers) do --loop through modifyers
+						for i,target in pairs(targets) do
+							command.Run(player,target,args)
+						end
 
-					if v == args[1] then --if the modifyer matches what the player said
+					else
+						
+						local Target = ArgLib.player(player,args[1])
 
-						if ArgLib[v] then --if there is a function for it in ArgLib
+						if Target then
 
-							ArgLib[v](player,args,command.Run)--run the agrUtils command
-							HasFoundModifyer = true
-							break
+							command.Run(player,Target,args)
 
 						end
+						
 					end
-				end
-				if HasFoundModifyer == false and args[1] then
-					ArgLib.player(player,args,command.Run)
-				elseif HasFoundModifyer == false and not table.find(Modifyers,"NotSelf") then
+					
+				else 
+					
 					command.Run(player,player,args)
+					
 				end
+				
 			else
+				
 				command.Run(player,player,args)
+				
 			end
 		else
 			UIUtils.Notify(player,"Error","you do not have permission to run this command")
