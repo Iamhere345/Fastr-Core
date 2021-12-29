@@ -1,7 +1,5 @@
 # Fastr
 
-This repo is a work in progress. i am still importing some of the scripts over to github
-
 this file was written to teach you how to use fastr.
 
 I am not responsible for any harm or moderation action caused by commands that you make or commands that have been
