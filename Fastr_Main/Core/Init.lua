@@ -24,5 +24,5 @@ game.Players.PlayerAdded:Connect(function(player) --some players woll join after
 end)
 
 game.ReplicatedStorage:WaitForChild("Fastr_Remotes").ExecuteCommand.OnServerEvent:Connect(function(player,cmd) --this would go in Default_Callbacks if it weren't so important
-	Parser.ParseCmd(player,cmd,false)
+	Parser.ParseCmd(player,cmd,false) --there are security checks within Parser.ParseCmd()
 end)
