@@ -72,7 +72,6 @@ MainModule.Initialise = function(root,Loaderversion)
 		wait(1)
 
 		for i,player in pairs(game.Players:GetPlayers()) do
-			print(player.Name)
 			local ui = script.FastrPackage.Fastr_UI:Clone()
 			ui.Parent = player.PlayerGui
 		end
