@@ -38,15 +38,15 @@ Core_Commands.m = {
 
 				Duration = tostring(args[1])
 				table.remove(args,1)
-				
+
 				local Message = table.concat(args," ")
 				local filteredMessage = game:GetService("Chat"):FilterStringForBroadcast(Message, player) --do not change this, if you remove the filter i am NOT responsible for what happens
-				
+
 				remotes.ShowMessage:FireAllClients(filteredMessage,player.Name,Duration)
 			else
 				local Message = table.concat(args," ")
 				local filteredMessage = game:GetService("Chat"):FilterStringForBroadcast(Message, player) --do not change this, if you remove the filter i am NOT responsible for what happens
-				
+
 				remotes.ShowMessage:FireAllClients(filteredMessage,player.Name,Duration)
 			end
 		else
@@ -71,16 +71,16 @@ Core_Commands.sm = {
 
 				Duration = tostring(args[1])
 				table.remove(args,1)
-				
+
 				local Message = table.concat(args," ")
 				local filteredMessage = game:GetService("Chat"):FilterStringForBroadcast(Message, player)
-				
+
 				remotes.ShowSmallMessage:FireAllClients(filteredMessage,player.Name,Duration)
 			else
-				
+
 				local Message = table.concat(args," ")
 				local filteredMessage = game:GetService("Chat"):FilterStringForBroadcast(Message, player)
-				
+
 				remotes.ShowSmallMessage:FireAllClients(filteredMessage,player.Name,Duration)
 			end
 		else
@@ -158,18 +158,18 @@ Core_Commands.createteam = {
 	Run = function(player,target,args)
 		if args[1] then
 			local team = Instance.new("Team",game.Teams)
-			
+
 			local TeamName = game:GetService("Chat"):FilterStringForBroadcast(args[1],player)
-			
+
 			team.Name = TeamName
 
 			if args[2] then
-				
+
 				table.remove(args,1)
-				
+
 				local Brick_Colour = table.concat(args," ")
 				team.TeamColor = BrickColor.new(Brick_Colour)
-				
+
 			else
 				team.TeamColor = BrickColor.Random()
 			end
@@ -201,9 +201,9 @@ Core_Commands.tp = {
 	Aliases = {"teleport"},
 	Run = function(player,target,args) --please remember that target is args[1], which means you cannot do :tp <player> all
 		target.Character.Humanoid:ChangeState(Enum.HumanoidStateType.None)
-		
+
 		local targets = ArgLib.CheckMod(player,args[2],args)
-		
+
 		if targets then
 			for _,t in pairs(targets) do
 				target.Character.HumanoidRootPart.CFrame = t.Character.HumanoidRootPart.CFrame + player.Character.HumanoidRootPart.CFrame.LookVector * 2
@@ -348,5 +348,55 @@ Core_Commands.countdown = {
 	end,
 }
 
+Core_Commands.freeze = {
+	Name = "Freeze",
+	Desc = "Stops a player from moving",
+	Usage = ":freeze <player OR modifyer> [duration]",
+	PermissionLevel = 1.5,
+	Modifyers = {"all"},
+	Aliases = {"anchor","stopmovement"},
+	Run = function(player,target,args)
+
+		local char = target.Character or target.Character:Wait()
+
+		local function Anchor()
+			
+			for _,p in pairs(char:GetChildren()) do
+				if p:IsA("BasePart") then
+					p.Anchored = true
+				end
+			end
+			
+			if args[2] and tonumber(args[2]) then
+				
+				local i = 0 
+				
+				repeat
+					task.wait(1)
+					i += 1
+				until i == tonumber(args[2])
+				
+				if char then --the player might have reset after the duration is over
+					
+				else
+					
+					task.wait() --there is a chance that the duration could finish right as the player resets, causing a race condition
+				end
+				
+			end
+			
+		end
+		
+		
+		Anchor()
+		
+		char.Humanoid.Died:Connect(function()
+			char = target.Character:Wait()
+			Anchor()
+		end)
+		
+	end,
+}
 
 return Core_Commands
+
