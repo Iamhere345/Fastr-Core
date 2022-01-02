@@ -3,8 +3,8 @@ local Parser = {}
 
 --//instances
 local Fastr = script.Parent.Parent
---//dependencies
 local CommandsFolder = Fastr:WaitForChild("Core").Commands
+--//dependencies
 local ArgLib = require(Fastr:WaitForChild("Lib"):WaitForChild("ArgLib"))
 local MiscUtils = require(Fastr:WaitForChild("Utils").MiscUtils)
 local UIUtils = require(Fastr:WaitForChild("Utils"):WaitForChild("UIUtils"))
@@ -67,9 +67,7 @@ Parser.ParseCmd = function(player,msg,UsingPrefix)
 	CheckGroupPerms(player)
 	GetDefaultRank(player)
 
-
 	local rank = GetPermissionLevel(player)
-
 
 	local CommandStr = string.split(msg," ")[1]
 	local args = string.split(msg," ")
@@ -92,41 +90,41 @@ Parser.ParseCmd = function(player,msg,UsingPrefix)
 
 
 		if command.PermissionLevel <= rank then
-			
+
 			if Modifyers then
-				
+
 				if table.find(Modifyers,args[1]) then
-					
-					if ArgLib[args[1]] and args[1] ~= "player" then
+
+					if ArgLib[args[1]] and args[1] ~= "player" then --ArgLib.player is special and cannot be accessed from the player just typing player
 
 						local targets = ArgLib.CheckMod(player,args[1],args)
 
 						for i,target in pairs(targets) do
 							command.Run(player,target,args)
-						end
+						end						
+
+					end
+
+				else  --this will fire if the first argument (usually reserved for a mod) is not a valid mod.
+
+					local Target = ArgLib.player(player,args[1])
+
+					if Target then
+						
+						command.Run(player,Target,args)
 
 					else
-						
-						local Target = ArgLib.player(player,args[1])
 
-						if Target then
+						command.Run(player,player,args)
 
-							command.Run(player,Target,args)
-
-						end
-						
 					end
-					
-				else 
-					
-					command.Run(player,player,args)
-					
+
 				end
-				
-			else
-				
+
+			else --if there are no modifyers, the mod argument will be the player that ran the command
+
 				command.Run(player,player,args)
-				
+
 			end
 		else
 			UIUtils.Notify(player,"Error","you do not have permission to run this command")
