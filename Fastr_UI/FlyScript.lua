@@ -18,6 +18,8 @@ local function fly(speed)
 	flying = true
 	char.Humanoid.PlatformStand = true
 	
+	char.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
+	
 	BodyGyro = Instance.new("BodyGyro",hrp)
 	BodyGyro.MaxTorque = Vector3.new(5000,5000,5000)
 	BodyGyro.P = 2500
@@ -127,7 +129,6 @@ game.ReplicatedStorage:WaitForChild("Fastr_Remotes").Fly.OnClientEvent:Connect(f
 			ForwardToggle = false
 			BodyVel.Velocity = Vector3.new(0,0,0)
 		end
-		print(ForwardToggle)
 	end)
 	
 	script.Parent:WaitForChild("FlightControl").StopFlight.MouseButton1Click:Connect(function()
