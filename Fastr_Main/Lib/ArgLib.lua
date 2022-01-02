@@ -14,7 +14,7 @@ end
 ArgLib.player = function(player,Target)
 	
 	if game.Players:FindFirstChild(Target) then --if the player has typed in the full username of the target
-		return {game.Players:FindFirstChild(Target)}
+		return game.Players:FindFirstChild(Target)
 	end
 	
 	local PossiblePlayers = {}
@@ -23,9 +23,12 @@ ArgLib.player = function(player,Target)
 		
 		if string.find(v.Name,Target) or string.find(v.DisplayName,Target) then --if the the given shortened player name if found in the players username or display name
 			
-			if string.split(string.find(v.Name,Target)," ")[1] == "1" then --if the string found starts at the start of the string
+			local usernameStart,usernameEnd = string.find(v.Name,Target)
+			local displayStart,DisplayEnd = string.find(v.Name,Target)
+			
+			if usernameStart == 1 then --if the string found starts at the start of the string having ":cmd here" when the username is Iamhere is unexpected behavior
 				table.insert(PossiblePlayers,v.Name)
-			elseif string.split(string.find(v.DisplayName,Target)," ")[1] == "1" then
+			elseif displayStart == 1 then --same thing but for display names
 				table.insert(PossiblePlayers,v.DisplayName)
 			end
 			
@@ -41,9 +44,12 @@ ArgLib.player = function(player,Target)
 			BestMatch = v
 		else
 			
-			if string.find(v,Target)[2] > string.find(BestMatch,Target)[2] then
+			local usernameStart,usernameEnd = string.find(v,Target)
+			local bestMatch_start,bestMatch_end = string.find(BestMatch,Target)
+			
+			if usernameEnd > bestMatch_end then
 				BestMatch = v
-			elseif string.find(v,Target)[2] == string.find(BestMatch,Target)[2] then
+			elseif usernameEnd == bestMatch_end then
 				UIUtils.Notify(player,"Error","two players with same start of name, please be more specific")
 				return nil
 			end
@@ -59,9 +65,9 @@ ArgLib.player = function(player,Target)
 	end
 	
 	if game.Players:FindFirstChild(BestMatch) then
-		return {game.Players:FindFirstChild(BestMatch)}
+		return game.Players:FindFirstChild(BestMatch) --other mods would return a table, because some of them have multiple targets (e.g ArgLib.all), and all of them apart from this mod are executed in the same way. since arglib.player is 'special' it only needs to return a single value 
 	else
-		UIUtils.Notify(player,"Error","not a valid player name")
+		--UIUtils.Notify(player,"Error","not a valid player name")
 	end
 	
 end
@@ -125,3 +131,4 @@ ArgLib.team = function(player,mod,args)
 end
 
 return ArgLib
+
