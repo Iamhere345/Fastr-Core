@@ -129,7 +129,7 @@ Q: im getting a message saying my loader won't be compatable with fastr soon, wh
 A: this means that you have an old version of fastr, so you can do 3 things: 1. migrate you current version of fastr over to a newer version 2. stick with your current version to 
 see if a new update will break your installation 3. go to the loader script and change the UPDATE_CHANNEL variable to "COMPATABILITY".
 
-Q: im getting a message saying that my version of fastr is old and won't work anymore. WHAT DO I DO???
+Q: im getting a message saying that my version of fastr is old and won't work anymore. what do i do?
 
 A: save as the question above, except you obviously can't do number 2.
 
@@ -153,3 +153,42 @@ if you are using the source version of fastr:
 step 1: go to Fastr_UI > Resources > Menu > Tabs, duplicate one of the text buttons and name it what you want your widget to be called and change the text property to che text to the name of your widget.
 step 2: now go to Fastr_UI > Resources > MenuResources and create a folder that has the EXACT same name as the text button you just made (case sensitive).
 step 3: go to Fastr_UI > Resources > Menu > MainMenu and build you ui there. when you are done drag the ui you made to the folder you made in step 2
+
+### EDITING CORE_COMMANDS
+
+the core_commands script is a script that contains all of the default commands. this script is a ModuleScript, so you can manupulate it like a table.
+
+prerequsites:
+	an understanding of ModuleScripts
+	an understanding of table and dictionaries
+	
+there is a designated script to put these edits in, call CoreCommandsEdits. you can find it in the loader.
+
+lets say you don't want to have the btools command active, you could do this:
+
+```lua
+Core_Commands.btools = nil
+```
+
+if you wanted to change it's description, you could do this:
+
+```lua
+Core_Commands.btools.desc = "this is a different description"
+```
+
+the complete format of a command goes as follows:
+
+```lua
+Core_Commands.[command name here] = {
+	Name = "Name",
+	Desc = "Desc",
+	Usage = ":command <argument> [optional argument]",
+	PermissionLevel = 1.5,
+	RepeatCeiling = 10,
+	Modifyers = {"all","me","others","random","randother","team"},
+	Aliases = {"othercommandname"}
+	Run = function(player,target,args)
+		print("code goes here")
+	end
+}
+```
