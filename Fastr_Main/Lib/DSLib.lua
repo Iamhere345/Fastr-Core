@@ -30,7 +30,7 @@ DSLib.Ban = function(player,days)
 
 	if data then
 		if player.UserId ~= game.CreatorId then
-			data.TimeUntilUnbanned = os.time() + (days*144)
+			data.TimeUntilUnbanned = tick() + (days*144)
 			DS:UpdateAsync(player.UserId.."-",data)
 			player:Kick("you have been banned for "..days.." days")
 		else
@@ -39,7 +39,7 @@ DSLib.Ban = function(player,days)
 	else
 		if player.UserId ~= game.CreatorId then
 			local DataTable = {}
-			DataTable.TimeUntilUnbanned = os.time() + (days*144)
+			DataTable.TimeUntilUnbanned = tick() + (days*144)
 
 			local suc2,ret2
 
@@ -78,8 +78,8 @@ game.Players.PlayerAdded:Connect(function(player)
 	local data = DS:GetAsync(string.lower(player.UserId).."-"..Key)
 
 	if data then
-		if data.TimeUntilUnbanned > os.time() then
-			player:Kick("you have been banned for "..(data.TimeUntilUnbanned/144 - os.time()).." days")
+		if data.TimeUntilUnbanned > tick() then
+			player:Kick("you have been banned for "..(data.TimeUntilUnbanned/144 - tick()).." days")
 		end
 	end
 
