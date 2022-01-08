@@ -62,6 +62,42 @@ local function IsValidAliase(cmd) --checks if the command the player has said is
 	return nil
 end
 
+local function PipeCommand(player,args1,args2) --these are both parsed tables
+
+	local targets = ArgLib.CheckMod(args2[2])
+
+	local cmd2 = args2[1]
+	table.remove(args2,1)
+
+	print(args1)
+	print(args2)
+
+	cmd2 = Commands[cmd2]
+
+	print(cmd2)
+
+	local cmd2Ret = cmd2.Run(player,player,args2)
+
+	table.insert(args1,cmd2Ret)
+
+	print(args1)
+
+	return args1
+
+end
+
+local function RepeatCmd(args,cmd)
+	
+	if args[#args-1] == Settings.RepeatChar and tonumber(args[#args]) then
+		
+		return cmd["RepeatCeiling"] or math.clamp(tonumber(args[#args]),1,250)
+
+	end
+
+	return nil
+
+end
+
 Parser.ParseCmd = function(player,msg,UsingPrefix)
 
 	CheckGroupPerms(player)
@@ -88,9 +124,66 @@ Parser.ParseCmd = function(player,msg,UsingPrefix)
 		local command = Commands[string.lower(CommandStr)]
 		local Modifyers = command.Modifyers
 
-
 		if command.PermissionLevel <= rank then
 
+			if table.find(args,Settings.PipeChar) then --this means the user wants to pipe a command to another command
+				--prep args for piping
+				local argsCopy = MiscUtils.DeepCopy(args)
+
+				argsCopy = table.concat(argsCopy," ")
+
+				argsCopy = string.split(argsCopy,Settings.PipeChar)
+
+				local args1 = string.split(argsCopy[1]," ")
+				local args2 = string.split(argsCopy[2]," ")
+
+				if args2[1] == "" then --if the user used a space after typing the pipe char, there would be a space as an argument, which Fastr does not like
+					table.remove(args2,1)
+				end
+
+				if args1[#args1] == "" then
+					table.remove(args1,#args1)
+				end
+
+				args = PipeCommand(player,args1,args2)
+
+			end
+			
+			if table.find(args,Settings.AndChar) then --if the user has inputted multiple command (:sm message + m  message + fly me)
+				
+				local argsCopy = MiscUtils.DeepCopy(args)
+				
+				argsCopy = table.concat(argsCopy," ")
+				argsCopy = string.split(argsCopy,Settings.AndChar)
+				
+				table.remove(argsCopy,1)
+				
+				for i,s in ipairs(argsCopy) do --im sorry
+					
+					if string.sub(s,0,1) == " " then
+						argsCopy[i] = string.sub(s,2,-1)
+					end
+					--[[
+					if string.sub(s,string.len(s)-1,string.len(s)) == " " then
+						print("EE")
+						argsCopy[i] = string.sub(s,0,string.len(s)-1)
+					end]]-- support for more than two commands at a time will come in the future
+				end
+				
+				argsCopy = table.concat(argsCopy,"")
+				
+				Parser.ParseCmd(player,argsCopy,false)
+				
+				args = table.concat(args," ")
+				args = string.split(args,Settings.AndChar)
+				
+				table.remove(args,2)
+				
+				args = args[1]
+				args = string.split(args," ")
+				
+			end
+			
 			if Modifyers then
 
 				if table.find(Modifyers,args[1]) then
@@ -98,10 +191,28 @@ Parser.ParseCmd = function(player,msg,UsingPrefix)
 					if ArgLib[args[1]] and args[1] ~= "player" then --ArgLib.player is special and cannot be accessed from the player just typing player
 
 						local targets = ArgLib.CheckMod(player,args[1],args)
+						
+						local RptCmd_result = RepeatCmd(args,command)
+						
+						if RptCmd_result then
+							
+							table.remove(args,#args)
+							table.remove(args,#args)
+							
+							for i = 0,RptCmd_result,1 do
+								for i,target in pairs(targets) do
+									command.Run(player,target,args)
+								end
+							end
+							
+						else
+							
+							for i,target in pairs(targets) do
+								command.Run(player,target,args)
+							end
+							
+						end
 
-						for i,target in pairs(targets) do
-							command.Run(player,target,args)
-						end						
 
 					end
 
@@ -111,19 +222,66 @@ Parser.ParseCmd = function(player,msg,UsingPrefix)
 
 					if Target then
 						
-						command.Run(player,Target,args)
-
+						local RptCmd_result = RepeatCmd(args,command)
+						
+						if RptCmd_result then
+							
+							table.remove(args,#args)
+							table.remove(args,#args)
+							
+							print("in1")
+							
+							for i = 0,RptCmd_result,1 do
+								command.Run(player,Target,args)
+							end
+							
+						else
+							print("no1")
+							command.Run(player,Target,args)
+						end
+						
 					else
-
-						command.Run(player,player,args)
-
+						
+						local RptCmd_result = RepeatCmd(args,command)
+						
+						if RptCmd_result then
+							
+							table.remove(args,#args)
+							table.remove(args,#args)
+							
+							print("in2")
+							
+							for i = 0,RptCmd_result,1 do 
+								command.Run(player,player,args)
+							end
+							
+						else
+							print("no2")
+							command.Run(player,player,args)
+						end
+						
+						
 					end
 
 				end
 
 			else --if there are no modifyers, the mod argument will be the player that ran the command
-
-				command.Run(player,player,args)
+				
+				local RptCmd_result = RepeatCmd(args,command)
+				
+				if RptCmd_result then
+					
+					table.remove(args,#args)
+					table.remove(args,#args)
+					
+					for i = 0,RptCmd_result,1 do
+						command.Run(player,player,args)
+					end
+					
+				else
+					command.Run(player,player,args)
+				end
+				
 
 			end
 		else
