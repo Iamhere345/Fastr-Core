@@ -156,6 +156,7 @@ Core_Commands.createteam = {
 	PermissionLevel = 1,
 	Aliases = {},
 	Run = function(player,target,args)
+		
 		if args[1] then
 			local team = Instance.new("Team",game.Teams)
 
@@ -173,7 +174,11 @@ Core_Commands.createteam = {
 			else
 				team.TeamColor = BrickColor.Random()
 			end
-
+			
+			print(team.Name)
+			
+			return team.Name
+			
 		else
 			UIUtils.Notify(player,"Error","argument missing")
 		end
@@ -277,7 +282,7 @@ Core_Commands.unban = {
 				UIUtils.Notify("Error","Not a valid player")
 			end
 		else
-			UIUtils.Notify(player,"Error","argument not specefyed, see cmds for more info on how to use this command")
+			UIUtils.Notify(player,"Error","argument not specifyed, see cmds for more info on how to use this command")
 		end
 	end,
 }
@@ -315,6 +320,7 @@ Core_Commands.btools = {
 	Desc = "gives a player building tools by F3X (credit to F3X for making Building Tools By F3X)",
 	Usage = ":btools <player OR Modifyer>",
 	PermissionLevel = 1.5,
+	RepeatCeiling = 10,
 	Modifyers = {"all","me","others","random","randother","team"},
 	Aliases = {},
 	Run = function(player,target,args)
@@ -376,10 +382,7 @@ Core_Commands.freeze = {
 					i += 1
 				until i == tonumber(args[2])
 				
-				if char then --the player might have reset after the duration is over
-					
-				else
-					
+				if not char then --the player might have reset after the duration is over
 					task.wait() --there is a chance that the duration could finish right as the player resets, causing a race condition
 				end
 				
@@ -390,7 +393,7 @@ Core_Commands.freeze = {
 		
 		Anchor()
 		
-		char.Humanoid.Died:Connect(function()
+		char.Humanoid.Died:Connect(function() -- >:)
 			char = target.Character:Wait()
 			Anchor()
 		end)
@@ -398,5 +401,25 @@ Core_Commands.freeze = {
 	end,
 }
 
-return Core_Commands
+Core_Commands.unfreeze = {
+	Name = "unfreeze",
+	Desc = "unfreezes a frozen player",
+	Usage = ":unfreeze <player>",
+	PermissionLevel = 1.5,
+	Modifyers = {"all"},
+	Run = function(player,target,args)
+		if target.Character or target.CharacterAdded:Wait() then
+			
+			local char = target.Character
+			
+			for _,p in pairs(char:GetChildren()) do
+				if p:IsA("BasePart") then
+					p.Anchored = false
+				end
+			end
+			
+		end
+	end,
+}
 
+return Core_Commands
