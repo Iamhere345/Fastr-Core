@@ -11,25 +11,39 @@ ArgLib.CheckMod = function(player,PossibleMod,args)
 	end
 end
 
-ArgLib.player = function(player,Target)
+ArgLib.player = function(player: Object,Target: string)
 	
-	if game.Players:FindFirstChild(Target) then --if the player has typed in the full username of the target
-		return game.Players:FindFirstChild(Target)
+	local function GetPlayer(name: string)
+		for _,p in pairs(game.Players:GetPlayers()) do
+			if string.lower(p.Name) == name then
+				return p
+			end
+		end
+	end
+	
+	Target = string.lower(Target)
+	
+	if not Target then
+		return nil
+	end
+	
+	if GetPlayer(Target) then --if the player has typed in the full username of the target
+		return GetPlayer(Target)
 	end
 	
 	local PossiblePlayers = {}
 	
 	for i,v in pairs(game.Players:GetPlayers()) do --loops through players
 		
-		if string.find(v.Name,Target) or string.find(v.DisplayName,Target) then --if the the given shortened player name if found in the players username or display name
+		if string.find(string.lower(v.Name),Target) or string.find(string.lower(v.DisplayName),Target) then --if the the given shortened player name if found in the players username or display name
 			
-			local usernameStart,usernameEnd = string.find(v.Name,Target)
-			local displayStart,DisplayEnd = string.find(v.Name,Target)
+			local usernameStart,usernameEnd = string.find(string.lower(v.Name),Target)
+			local displayStart,DisplayEnd = string.find(string.lower(v.Name),Target)
 			
 			if usernameStart == 1 then --if the string found starts at the start of the string having ":cmd here" when the username is Iamhere is unexpected behavior
-				table.insert(PossiblePlayers,v.Name)
+				table.insert(PossiblePlayers,string.lower(v.Name))
 			elseif displayStart == 1 then --same thing but for display names
-				table.insert(PossiblePlayers,v.DisplayName)
+				table.insert(PossiblePlayers,string.lower(v.DisplayName))
 			end
 			
 		end
@@ -59,13 +73,13 @@ ArgLib.player = function(player,Target)
 	end
 	
 	for i,v in pairs(game.Players:GetPlayers()) do --this block converts the players displayName into the players Username for execution
-		if v.DisplayName == BestMatch then
-			v.Name = BestMatch
+		if string.lower(v.DisplayName) == BestMatch then
+			BestMatch = string.lower(v.Name)
 		end
 	end
 	
-	if game.Players:FindFirstChild(BestMatch) then
-		return game.Players:FindFirstChild(BestMatch) --other mods would return a table, because some of them have multiple targets (e.g ArgLib.all), and all of them apart from this mod are executed in the same way. since arglib.player is 'special' it only needs to return a single value 
+	if GetPlayer(BestMatch) then
+		return GetPlayer(BestMatch) --other mods would return a table, because some of them have multiple targets (e.g ArgLib.all), and all of them apart from this mod are executed in the same way. since arglib.player is 'special' it only needs to return a single value 
 	else
 		--UIUtils.Notify(player,"Error","not a valid player name")
 	end
@@ -102,10 +116,14 @@ ArgLib.randother = function(player)
 	
 	local ChosenPlayer = player
 	
+	if #game.Players:GetPlayers() > 1 then
+		return {} --return an empty table instead of nil to prevent throwing an error
+	end
+	
 	repeat
 		ChosenPlayer = game.Players:GetPlayers()[math.random(1,#game.Players:GetPlayers())]
 	until ChosenPlayer ~= player
-	
+		
 	return {ChosenPlayer}
 	
 end
@@ -124,6 +142,8 @@ ArgLib.team = function(player,mod,args)
 			end
 		end
 		
+		return PlayersInTeam
+		
 	else
 		UIUtils.Notify(player,"Error","Not a valid team")
 	end
@@ -131,4 +151,3 @@ ArgLib.team = function(player,mod,args)
 end
 
 return ArgLib
-
