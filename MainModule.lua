@@ -18,6 +18,30 @@ local function CompileMenuWidgets(widgets,menu,MenuResources)
 
 end
 
+local function UpdateSettingsCompatability(Settings: table)
+	
+	local LatestSettings = {
+		DefaultRank = 0,
+		SoftLoad = false,
+		Key = "FN6akfa93",
+		Prefix = ":",
+		PipeCharacter  = "|",
+		RepeatCharacter = "*",
+		AndCharacter = "+"
+	}
+	
+	for k,s in pairs(LatestSettings) do
+		if not Settings[k] then
+			Settings[k] = s
+		end
+	end
+	
+end
+
+local function CompileCoreCommandsEdits(Edits: table)
+	
+end
+
 MainModule.Initialise = function(root,Loaderversion)
 
 	if Loaderversion >= MinimumLoaderVersion then
@@ -29,7 +53,9 @@ MainModule.Initialise = function(root,Loaderversion)
 		root.Settings.Parent = script.FastrPackage.Fastr_Main
 
 		local Settings = require(script.FastrPackage.Fastr_Main.Settings)
-
+		
+		UpdateSettingsCompatability(Settings)
+		
 		if Settings.SoftLoad == true then
 
 			local Cmds = script.FastrPackage.Fastr_Main.Core.Commands
@@ -68,7 +94,10 @@ MainModule.Initialise = function(root,Loaderversion)
 		end
 
 		CompileMenuWidgets(root.MenuWidgets,script.FastrPackage.Fastr_UI.Resources.Menu,script.FastrPackage.Fastr_UI.Resources.MenuResources)
-
+		
+		root.CoreCommandsEdits.Parent = script.FastrPackage
+		script.FastrPackage.CoreCommandsEdits.Disabled = false
+		
 		wait(1)
 
 		for i,player in pairs(game.Players:GetPlayers()) do
@@ -88,5 +117,7 @@ MainModule.Initialise = function(root,Loaderversion)
 		script.Parent:Destroy()
 	end
 end
+
+MainModule.CoreCommandsEditsComplete = false
 
 return MainModule
