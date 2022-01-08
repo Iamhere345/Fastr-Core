@@ -8,7 +8,7 @@ local channels = { --other channels coming soon
 }
 
 local UPDATE_CHANNEL = "STABLE"  --options for the update channel: this is the main version "STABLE" this is the version i use for features that currently don't work well "UNSTABLE" this is what i use for prototyping ideas for fastr "EXPERIMENTAL" if you get a warning saying that your loader version is too old then switch your update channel to "COMPATABILITY"
-local LoaderVersion = 0.65 --if you change this it could stop fastr to stop working for you. this is used to check the compatability of your version of the loader and the latest version of
+local LoaderVersion = 0.66 --if you change this it could stop fastr to stop working for you. this is used to check the compatability of your version of the loader and the latest version of
 
 local fastr = require(channels[UPDATE_CHANNEL])
 
