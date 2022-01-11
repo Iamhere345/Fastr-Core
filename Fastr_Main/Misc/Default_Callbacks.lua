@@ -1,18 +1,22 @@
 local Fastr = script.Parent.Parent
 local remotes = game.ReplicatedStorage:WaitForChild("Fastr_Remotes")
 local mps = game:GetService("MarketplaceService")
+
 --this script contains all of the callbacks made on the client. pretty self-explanitory
+
+local commands = require(Fastr.Utils.MiscUtils).CompileCommands(Fastr.Core.Commands)
+
 remotes.GetCmdData.OnServerInvoke = function() --this gets every commands metadata and sends them to the client for the :cmds command. this isn't a great place to put it but it's here anyway
 
-	return require(Fastr.Utils.MiscUtils).CompileCommands(Fastr.Core.Commands) --don't worry i've checked and this isn't exploitable
+	return commands --don't worry i've checked and this isn't exploitable
 
 end
 
-remotes.PromptPurchase.OnServerEvent:Connect(function(Purchase) --for the menu widgets donate and download
+remotes.PromptPurchase.OnServerEvent:Connect(function(player,Purchase)
 	
 	local Store = {
 		["Donate100"] = 1225919041,
-		["Donate50"] = 1225919151,
+		["Donate50"] = 1225919151
 	}
 	
 	local Download = {
@@ -22,9 +26,9 @@ remotes.PromptPurchase.OnServerEvent:Connect(function(Purchase) --for the menu w
 	}
 	
 	if Store[Purchase] then
-		mps:PromptGamePassPurchase(Store[Purchase])
+		mps:PromptGamePassPurchase(player,Store[Purchase])
 	elseif Download[Purchase] then
-		mps:PromptPurchase(Download[Purchase])
+		mps:PromptPurchase(player,Download[Purchase])
 	end
-	
+
 end)
