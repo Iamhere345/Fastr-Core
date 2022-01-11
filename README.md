@@ -154,7 +154,7 @@ step 1: go to Fastr_UI > Resources > Menu > Tabs, duplicate one of the text butt
 step 2: now go to Fastr_UI > Resources > MenuResources and create a folder that has the EXACT same name as the text button you just made (case sensitive).
 step 3: go to Fastr_UI > Resources > Menu > MainMenu and build you ui there. when you are done drag the ui you made to the folder you made in step 2
 
-### EDITING CORE_COMMANDS
+### Editing Core_Commands
 
 the core_commands script is a script that contains all of the default commands. this script is a ModuleScript, so you can manupulate it like a table.
 
