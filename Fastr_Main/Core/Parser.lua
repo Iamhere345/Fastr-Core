@@ -14,6 +14,8 @@ local Ranks = Settings.Ranks
 local GroupRanks = Settings.GroupRanks
 local prefix = Settings.Prefix
 
+wait(0.25)
+
 local Commands = MiscUtils.CompileCommands(CommandsFolder)
 
 local function GetPermissionLevel(player) --gets a players permission level. it loops through the ranks table and if it finds the players userid or name as the first value it will return the second value. otherwise it will return 0
@@ -187,7 +189,7 @@ Parser.ParseCmd = function(player,msg,UsingPrefix)
 			if Modifyers then
 
 				if table.find(Modifyers,args[1]) then
-
+					
 					if ArgLib[args[1]] and args[1] ~= "player" then --ArgLib.player is special and cannot be accessed from the player just typing player
 
 						local targets = ArgLib.CheckMod(player,args[1],args)
@@ -229,14 +231,11 @@ Parser.ParseCmd = function(player,msg,UsingPrefix)
 							table.remove(args,#args)
 							table.remove(args,#args)
 							
-							print("in1")
-							
 							for i = 0,RptCmd_result,1 do
 								command.Run(player,Target,args)
 							end
 							
 						else
-							print("no1")
 							command.Run(player,Target,args)
 						end
 						
@@ -249,14 +248,11 @@ Parser.ParseCmd = function(player,msg,UsingPrefix)
 							table.remove(args,#args)
 							table.remove(args,#args)
 							
-							print("in2")
-							
 							for i = 0,RptCmd_result,1 do 
 								command.Run(player,player,args)
 							end
 							
 						else
-							print("no2")
 							command.Run(player,player,args)
 						end
 						
