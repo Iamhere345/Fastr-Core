@@ -95,8 +95,9 @@ MainModule.Initialise = function(root,Loaderversion)
 
 		CompileMenuWidgets(root.MenuWidgets,script.FastrPackage.Fastr_UI.Resources.Menu,script.FastrPackage.Fastr_UI.Resources.MenuResources)
 		
-		root.CoreCommandsEdits.Parent = script.FastrPackage
-		script.FastrPackage.CoreCommandsEdits.Disabled = false
+		if root:FindFirstChild("CoreCommandsEdits") then
+			root.CoreCommandsEdits.Parent = script.FastrPackage.Fastr_Main.Utils.MiscUtils
+		end
 		
 		wait(1)
 
@@ -117,7 +118,5 @@ MainModule.Initialise = function(root,Loaderversion)
 		script.Parent:Destroy()
 	end
 end
-
-MainModule.CoreCommandsEditsComplete = false
 
 return MainModule
