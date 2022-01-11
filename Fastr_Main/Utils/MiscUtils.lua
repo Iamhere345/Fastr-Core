@@ -2,14 +2,13 @@ local MiscUtils = {}
 
 MiscUtils.CompileCommands = function(Root)
 	
-	if script.Parent.Parent.Parent.Parent.Parent.Name == "MainModule" then
-		repeat
-			task.wait()
-		until require(script.Parent.Parent.Parent.Parent.Parent.Name).CoreCommandsEditsCompleted == true
+	local MakeEdits
+	local compiledTable = {}
+	
+	if script:FindFirstChild("CoreCommandsEdits") then
+		MakeEdits = require(script.CoreCommandsEdits)
 	end
 	
-	local compiledTable = {}
-
 	for i,v in pairs(Root:GetChildren()) do
 		if v:IsA("ModuleScript") then
 
@@ -18,10 +17,14 @@ MiscUtils.CompileCommands = function(Root)
 			for i,v in pairs(CommandTable) do
 				compiledTable[string.lower(v.Name)] = v --this is how you can have a command with an uppercase name have fastr still work with that command
 			end
-
+			
+			if v.Name == "Core_Commands" and MakeEdits then
+				MakeEdits(CommandTable)
+			end
+			
 		end
 	end
-
+	
 	return compiledTable
 
 end
