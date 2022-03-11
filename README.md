@@ -38,8 +38,7 @@ Group ranks: this is like the ranks table, but for groups.
 e.g: you have a group with the id 1337, and you want people with the rank 250 to have the permission level 1.5:
 {1337,250,1.5}
 
-Key: this is the "password" that fastr saves your data with. to make sure that your game is secure and players can't unban themselves, you should change it to a
-randon string of numbers and letters
+Key: this is the key that Fastr saves your data with. Change it to whatever you want, and if you ever want.
 
 Prefix: this is what you put at the start of a command. by default it is ":", so if you wanted to use the fly command, you would have to say :fly.
 you can change this to whatever you want (except characters like " or ' or %).
