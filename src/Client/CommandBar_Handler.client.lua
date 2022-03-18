@@ -97,11 +97,11 @@ for _,c in pairs(CmdData) do --we only need the names of the commands for Update
 	end
 end	
 
-uis.InputBegan:Connect(function(key)
-
+uis.InputBegan:Connect(function(key,internallyActed)
+	
 	local Focus
 
-	if key.KeyCode == Enum.KeyCode.BackSlash then
+	if key.KeyCode == Enum.KeyCode.BackSlash and not internallyActed then
 
 		if not debounce then
 
@@ -110,7 +110,7 @@ uis.InputBegan:Connect(function(key)
 			Focus = ExecuteCommand(CommandBar)
 
 			CommandBar:CaptureFocus()
-
+			
 			if IsOpen then
 
 				CloseCommandBar:Play()
@@ -133,7 +133,9 @@ uis.InputBegan:Connect(function(key)
 				OpenCommandBar:Play()
 
 				IsOpen = true
-
+				
+				CommandBar.Text = ""
+				
 			end
 
 			wait(0.2)
@@ -145,3 +147,5 @@ uis.InputBegan:Connect(function(key)
 	end
 
 end)
+
+
