@@ -11,6 +11,7 @@ local TextService = game:GetService("TextService")
 local Resources = Fastr.Resources
 local remotes = game.ReplicatedStorage.Fastr_Remotes
 
+-- selene: allow(unused_variable)
 Core_Commands.cmds = {
 	Name = "cmds",
 	Desc = "brings up the Commands ui",

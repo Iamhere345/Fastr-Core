@@ -16,29 +16,27 @@ local NE
 local flying = false
 
 local function fly(noclip_enabled)
-
 	flying = true
 	char.Humanoid.PlatformStand = true
 
-	char.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
+	char.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
 
-	BodyGyro = Instance.new("BodyGyro",hrp)
-	BodyGyro.MaxTorque = Vector3.new(5000,5000,5000)
+	BodyGyro = Instance.new("BodyGyro", hrp)
+	BodyGyro.MaxTorque = Vector3.new(5000, 5000, 5000)
 	BodyGyro.P = 2500
 	BodyGyro.CFrame = hrp.CFrame
 	BodyGyro.D = 250
 
-	BodyVel = Instance.new("BodyVelocity",hrp)
-	BodyVel.MaxForce = Vector3.new(5000,5000,5000)
+	BodyVel = Instance.new("BodyVelocity", hrp)
+	BodyVel.MaxForce = Vector3.new(5000, 5000, 5000)
 	BodyVel.P = 2500
-	BodyVel.Velocity = Vector3.new(0,0,0)
+	BodyVel.Velocity = Vector3.new(0, 0, 0)
 
 	if ForwardToggle == true then
 		BodyVel.Velocity = camera.CFrame.LookVector * 65
 	end
 
 	camCF = camera:GetPropertyChangedSignal("CFrame"):Connect(function() --TODO: switch to CAS
-
 		if uis:IsKeyDown(Enum.KeyCode.W) or ForwardToggle == true then
 			BodyVel.Velocity = camera.CFrame.LookVector * 65
 		end
@@ -66,40 +64,38 @@ local function fly(noclip_enabled)
 		if BodyGyro and BodyGyro.Parent then
 			BodyGyro.CFrame = camera.CFrame
 		end
-
 	end)
 
 	IE = uis.InputEnded:Connect(function(input)
 		if input.KeyCode == Enum.KeyCode.W then
-			BodyVel.Velocity = Vector3.new(0,0,0)
+			BodyVel.Velocity = Vector3.new(0, 0, 0)
 		end
 		if input.KeyCode == Enum.KeyCode.A then
-			BodyVel.Velocity = Vector3.new(0,0,0)
+			BodyVel.Velocity = Vector3.new(0, 0, 0)
 		end
 		if input.KeyCode == Enum.KeyCode.S then
-			BodyVel.Velocity = Vector3.new(0,0,0)
+			BodyVel.Velocity = Vector3.new(0, 0, 0)
 		end
 		if input.KeyCode == Enum.KeyCode.D then
-			BodyVel.Velocity = Vector3.new(0,0,0)
+			BodyVel.Velocity = Vector3.new(0, 0, 0)
 		end
 		if input.KeyCode == Enum.KeyCode.R then
-			BodyVel.Velocity = Vector3.new(0,0,0)
+			BodyVel.Velocity = Vector3.new(0, 0, 0)
 		end
 		if input.KeyCode == Enum.KeyCode.F then
-			BodyVel.Velocity = Vector3.new(0,0,0)
+			BodyVel.Velocity = Vector3.new(0, 0, 0)
 		end
 	end)
 
 	if noclip_enabled then
 		NE = game:GetService("RunService").Stepped:Connect(function()
-			for _,v in pairs(char:GetDescendants()) do
+			for _, v in pairs(char:GetDescendants()) do
 				if v:IsA("BasePart") then
 					v.CanCollide = false
 				end
 			end
 		end)
 	end
-
 end
 
 local function StopFlying()
@@ -108,28 +104,25 @@ local function StopFlying()
 	IE:Disconnect()
 	BodyGyro:Destroy()
 	BodyVel:Destroy()
-	
+
 	if NE then
 		NE:Disconnect()
 	end
-	
 end
 
 game.ReplicatedStorage:WaitForChild("Fastr_Remotes").Fly.OnClientEvent:Connect(function(noclip_enabled)
 	if not flying then
-
 		local FC = script.Parent.Parent.Resources.FlightControl:Clone() --flight control gui
 		FC.Parent = script.Parent
 
-		local FCT = tween:Create(FC,TweenInfo.new(0.5),{Position = UDim2.new(0.85,0,0.8,0)}) --flight control gui tween
+		local FCT = tween:Create(FC, TweenInfo.new(0.5), { Position = UDim2.new(0.85, 0, 0.8, 0) }) --flight control gui tween
 		FCT:Play()
 
 		FCT.Completed:Wait()
 
 		fly(noclip_enabled)
 
-
-		IB = uis.InputBegan:Connect(function(input,otherInput)
+		IB = uis.InputBegan:Connect(function(input, otherInput)
 			if input.KeyCode == Enum.KeyCode.E and not otherInput then
 				if flying == true then
 					StopFlying()
@@ -145,7 +138,7 @@ game.ReplicatedStorage:WaitForChild("Fastr_Remotes").Fly.OnClientEvent:Connect(f
 				ForwardToggle = true
 			else
 				ForwardToggle = false
-				BodyVel.Velocity = Vector3.new(0,0,0)
+				BodyVel.Velocity = Vector3.new(0, 0, 0)
 			end
 		end)
 
@@ -156,7 +149,5 @@ game.ReplicatedStorage:WaitForChild("Fastr_Remotes").Fly.OnClientEvent:Connect(f
 			script.Parent.FlightControl:Destroy()
 			flying = false
 		end)
-
 	end
-
 end)
