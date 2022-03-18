@@ -1,5 +1,4 @@
 # Fastr
-<<<<<<< HEAD
 
 this file was written to teach you how to use fastr.
 
