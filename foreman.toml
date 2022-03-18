@@ -1,0 +1,4 @@
+[tools]
+selene = { github = "Kampfkarren/Selene", version = "0.16.0" }
+stylua = { source = "JohnnyMorganz/stylua", version = "0.12.5" }
+wally = { source = "UpliftGames/wally", version = "0.3.1" }
