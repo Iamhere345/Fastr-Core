@@ -8,7 +8,7 @@ local commands = require(Fastr.Utils.MiscUtils).CompileCommands(Fastr.Core.Comma
 
 remotes.GetCmdData.OnServerInvoke = function() --this gets every commands metadata and sends them to the client for the :cmds command. this isn't a great place to put it but it's here anyway
 
-	return commands --don't worry i've checked and this isn't exploitable
+	return commands
 
 end
 

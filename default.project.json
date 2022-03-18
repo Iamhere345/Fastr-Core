@@ -1,0 +1,24 @@
+{
+  "name": "Fastr",
+  "tree": {
+    "$className": "DataModel",
+
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+      "Fastr_Server": {
+        "$className": "Folder",
+        "$path": "src/server"
+      }
+    },
+    
+    "StarterGui": {
+      "$className": "StarterGui",
+      "Fastr_Client": {
+        "$className": "Folder",
+        "$path": "src/Client",
+        "$ignoreUnknownInstances": true
+      }
+    }
+
+  }
+}

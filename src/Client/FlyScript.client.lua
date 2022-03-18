@@ -1,4 +1,5 @@
 local uis = game:GetService("UserInputService")
+local cas = game:GetService("ContextActionService")
 local tween = game:GetService("TweenService")
 local player = game.Players.LocalPlayer
 local char = player.Character or player.CharacterAdded:Wait()
@@ -11,15 +12,16 @@ local camCF
 local IE
 local IB
 local TF
+local NE
 local flying = false
 
-local function fly(speed)
-	
+local function fly(noclip_enabled)
+
 	flying = true
 	char.Humanoid.PlatformStand = true
-	
+
 	char.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
-	
+
 	BodyGyro = Instance.new("BodyGyro",hrp)
 	BodyGyro.MaxTorque = Vector3.new(5000,5000,5000)
 	BodyGyro.P = 2500
@@ -30,11 +32,11 @@ local function fly(speed)
 	BodyVel.MaxForce = Vector3.new(5000,5000,5000)
 	BodyVel.P = 2500
 	BodyVel.Velocity = Vector3.new(0,0,0)
-	
+
 	if ForwardToggle == true then
 		BodyVel.Velocity = camera.CFrame.LookVector * 65
 	end
-	
+
 	camCF = camera:GetPropertyChangedSignal("CFrame"):Connect(function() --TODO: switch to CAS
 
 		if uis:IsKeyDown(Enum.KeyCode.W) or ForwardToggle == true then
@@ -52,11 +54,11 @@ local function fly(speed)
 		if uis:IsKeyDown(Enum.KeyCode.D) then
 			BodyVel.Velocity = camera.CFrame.RightVector * 65
 		end
-		
+
 		if uis:IsKeyDown(Enum.KeyCode.R) then
 			BodyVel.Velocity = camera.CFrame.UpVector * 65
 		end
-		
+
 		if uis:IsKeyDown(Enum.KeyCode.F) then
 			BodyVel.Velocity = camera.CFrame.UpVector * -65
 		end
@@ -87,6 +89,17 @@ local function fly(speed)
 			BodyVel.Velocity = Vector3.new(0,0,0)
 		end
 	end)
+
+	if noclip_enabled then
+		NE = game:GetService("RunService").Stepped:Connect(function()
+			for _,v in pairs(char:GetDescendants()) do
+				if v:IsA("BasePart") then
+					v.CanCollide = false
+				end
+			end
+		end)
+	end
+
 end
 
 local function StopFlying()
@@ -95,48 +108,55 @@ local function StopFlying()
 	IE:Disconnect()
 	BodyGyro:Destroy()
 	BodyVel:Destroy()
+	
+	if NE then
+		NE:Disconnect()
+	end
+	
 end
 
-game.ReplicatedStorage:WaitForChild("Fastr_Remotes").Fly.OnClientEvent:Connect(function()
-	
-	local FC = script.Parent.Parent.Resources.FlightControl:Clone() --flight control gui
-	FC.Parent = script.Parent
-	
-	local FCT = tween:Create(FC,TweenInfo.new(0.5),{Position = UDim2.new(0.85,0,0.8,0)}) --flight control gui tween
-	FCT:Play()
-	
-	FCT.Completed:Wait()
-	
-	if flying == false then
-		fly()
+game.ReplicatedStorage:WaitForChild("Fastr_Remotes").Fly.OnClientEvent:Connect(function(noclip_enabled)
+	if not flying then
+
+		local FC = script.Parent.Parent.Resources.FlightControl:Clone() --flight control gui
+		FC.Parent = script.Parent
+
+		local FCT = tween:Create(FC,TweenInfo.new(0.5),{Position = UDim2.new(0.85,0,0.8,0)}) --flight control gui tween
+		FCT:Play()
+
+		FCT.Completed:Wait()
+
+		fly(noclip_enabled)
+
+
+		IB = uis.InputBegan:Connect(function(input,otherInput)
+			if input.KeyCode == Enum.KeyCode.E and not otherInput then
+				if flying == true then
+					StopFlying()
+					flying = false
+				elseif flying == false then
+					fly(noclip_enabled)
+				end
+			end
+		end)
+
+		TF = script.Parent.FlightControl.ToggleGoForward.MouseButton1Click:Connect(function()
+			if ForwardToggle == false then
+				ForwardToggle = true
+			else
+				ForwardToggle = false
+				BodyVel.Velocity = Vector3.new(0,0,0)
+			end
+		end)
+
+		script.Parent:WaitForChild("FlightControl").StopFlight.MouseButton1Click:Connect(function()
+			IB:Disconnect()
+			TF:Disconnect()
+			StopFlying()
+			script.Parent.FlightControl:Destroy()
+			flying = false
+		end)
+
 	end
 
-	IB = uis.InputBegan:Connect(function(input,otherInput)
-		if input.KeyCode == Enum.KeyCode.E and not otherInput then
-			if flying == true then
-				StopFlying()
-				flying = false
-			elseif flying == false then
-				fly()
-			end
-		end
-	end)
-	
-	TF = script.Parent.FlightControl.ToggleGoForward.MouseButton1Click:Connect(function()
-		if ForwardToggle == false then
-			ForwardToggle = true
-		else
-			ForwardToggle = false
-			BodyVel.Velocity = Vector3.new(0,0,0)
-		end
-	end)
-	
-	script.Parent:WaitForChild("FlightControl").StopFlight.MouseButton1Click:Connect(function()
-		IB:Disconnect()
-		TF:Disconnect()
-		StopFlying()
-		script.Parent.FlightControl:Destroy()
-		flying = false
-	end)
-	
 end)

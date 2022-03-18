@@ -3,7 +3,7 @@ local Core_Commands = {}
 local Fastr = script.Parent.Parent.Parent
 
 local ArgLib = require(Fastr:WaitForChild("Lib"):WaitForChild("ArgLib"))
-local DSLib = require(Fastr.Lib:WaitForChild("DSLib"))
+local DSLib = require(Fastr:WaitForChild("Lib"):WaitForChild("DSLib"))
 
 local UIUtils = require(Fastr:WaitForChild("Utils"):WaitForChild("UIUtils"))
 
@@ -17,7 +17,7 @@ Core_Commands.cmds = {
 	Usage = ":cmds",
 	PermissionLevel = 0,
 	Aliases = {"Help","Commands"},
-	Run = function(player,target,args)
+	Run = function(player,target,args,flags)
 		remotes.OpenMenu:FireClient(player,"Commands")
 	end,
 }
@@ -28,7 +28,7 @@ Core_Commands.m = {
 	Usage = ":m [duration] <message>",
 	PermissionLevel = 1.5,
 	Aliases = {"message"},
-	Run = function(player,target,args)
+	Run = function(player,target,args,flags)
 
 		local Duration = 5
 
@@ -61,7 +61,7 @@ Core_Commands.sm = {
 	Usage = ":sm [duration] <message>",
 	PermissionLevel = 1,
 	Aliases = {"smallmessage"},
-	Run = function(player,target,args)
+	Run = function(player,target,args,flags)
 
 		local Duration = 5
 
@@ -96,7 +96,7 @@ Core_Commands.whisper = {
 	PermissionLevel = 0,
 	Modifyers = {"all","me","others","random","randother","team"},
 	Aliases = {"tell"},
-	Run = function(player,target,args)
+	Run = function(player,target,args,flags)
 
 		table.remove(args,1)
 		local msg = table.concat(args," ")
@@ -112,7 +112,7 @@ Core_Commands.splitteam = {
 	Usage = ":twoteams <team to split> <team1> <team2>",
 	PermissionLevel = 1,
 	Aliases = {"twoteams"},
-	Run = function(player,target,args)
+	Run = function(player,target,args,flags)
 		if args[3] then
 			local splitTeam = args[1]
 			local team1 = args[2]
@@ -155,7 +155,7 @@ Core_Commands.createteam = {
 	Usage = ":createteam <team name (no spaces)> [BrickColor]",
 	PermissionLevel = 1,
 	Aliases = {},
-	Run = function(player,target,args)
+	Run = function(player,target,args,flags)
 		
 		if args[1] then
 			local team = Instance.new("Team",game.Teams)
@@ -192,7 +192,7 @@ Core_Commands.team = {
 	Modifyers = {"all","me","others","random","randother"},
 	PermissionLevel = 1,
 	Aliases = {"changeteam"},
-	Run = function(player,target,args)
+	Run = function(player,target,args,flags)
 		target.Team = game.Teams:FindFirstChild(args[2])
 	end,
 }
@@ -204,7 +204,7 @@ Core_Commands.tp = {
 	PermissionLevel = 0.5,
 	Modifyers = {"all","me","others","random","randother","team"},
 	Aliases = {"teleport"},
-	Run = function(player,target,args) --please remember that target is args[1], which means you cannot do :tp <player> all
+	Run = function(player,target,args,flags) --please remember that target is args[1], which means you cannot do :tp <player> all
 		target.Character.Humanoid:ChangeState(Enum.HumanoidStateType.None)
 
 		local targets = ArgLib.CheckMod(player,args[2],args)
@@ -226,7 +226,7 @@ Core_Commands.bring = {
 	PermissionLevel = 1,
 	Modifyers = {"all","me","others","random","randother","team"},
 	Aliases = {},
-	Run = function(player,target,args)
+	Run = function(player,target,args,flags)
 		target.Character.Humanoid:ChangeState(Enum.HumanoidStateType.None)
 		target.Character.HumanoidRootPart.CFrame = player.Character.HumanoidRootPart.CFrame + player.Character.HumanoidRootPart.CFrame.LookVector * 2
 	end,
@@ -239,7 +239,7 @@ Core_Commands.to = {
 	PermissionLevel = 1,
 	Modifyers = {"all","me","others","random","randother","team"},
 	Aliases = {},
-	Run = function(player,target,args)
+	Run = function(player,target,args,flags)
 		target.Character.Humanoid:ChangeState(Enum.HumanoidStateType.None)
 		player.Character.HumanoidRootPart.CFrame = target.Character.HumanoidRootPart.CFrame + target.Character.HumanoidRootPart.CFrame.LookVector * 2
 	end,
@@ -252,8 +252,18 @@ Core_Commands.fly = {
 	PermissionLevel = 1,
 	Modifyers = {"all","me","others","random","randother","team"},
 	Aliases = {},
-	Run = function(player,target,args)
-		remotes.Fly:FireClient(target)
+	Run = function(player,target,args,flags)
+		
+		local noclip_enabled
+		
+		if table.find(flags,"-n") then
+			print("FSAO:FESWNIDK:")
+			noclip_enabled = true
+		else
+			noclip_enabled = false
+		end
+		
+		remotes.Fly:FireClient(target,noclip_enabled)
 	end,
 }
 
@@ -262,9 +272,31 @@ Core_Commands.ban = {
 	Desc = "bans a player for x amount of days",
 	Usage = ":ban <player> [days]",
 	PermissionLevel = 2,
-	Modfyers = {"all","me","others","random","randother","team"},
-	Run = function(player,target,args)
-		DSLib.Ban(target,args[2])
+	Modifyers = {"all","me","others","random","randother","team"},
+	Run = function(player,target,args,flags)
+		print(target.Name)
+		
+		if not tonumber(args[2]) then
+			UIUtils.Notify(player,"Error","not a valid amount of time")
+			return
+		end
+		
+		local days
+		
+		if table.find(flags,"-P") then days = 99e9 else days = tonumber(args[2]) end
+		
+		for i = 0,1,1 do table.remove(args,1) end
+		
+		local note
+		
+		if args[1] then
+			note = table.concat(args," ")
+			note = game:GetService("Chat"):FilterStringAsync(note,player,target)
+		else
+			note = "no note provided"
+		end
+		
+		DSLib.Ban(target,days,player,note)
 	end,
 }
 
@@ -274,15 +306,15 @@ Core_Commands.unban = {
 	Usage = ":unban <players full name>",
 	PermissionLevel = 2,
 	Modfyers = {},
-	Run = function(player,target,args)
+	Run = function(player,target,args,flags)
 		if args[1] then
 			if game.Players:GetUserIdFromNameAsync(args[1]) then
-				DSLib.Unban(game.Players:GetUserIdFromNameAsync(args[1]))
+				DSLib.Unban(player,game.Players:GetUserIdFromNameAsync(args[1]))
 			else
 				UIUtils.Notify("Error","Not a valid player")
 			end
 		else
-			UIUtils.Notify(player,"Error","argument not specifyed, see cmds for more info on how to use this command")
+			UIUtils.Notify(player,"Error","argument not specified, see cmds for more info on how to use this command")
 		end
 	end,
 }
@@ -293,8 +325,14 @@ Core_Commands.kick = {
 	Usage = ":kick <player> [message]",
 	PermissionLevel = 1.5,
 	Modifyers = {"all","me","others","random","randother","team"},
-	Run = function(player,target,args)
-		target:Kick(args[2])
+	Run = function(player,target,args,flags)
+		
+		if target then
+			target:Kick(args[2])
+		else
+			UIUtils.Notify(player,"Error","Not a valid player")
+		end
+		
 	end,
 }
 
@@ -305,7 +343,7 @@ Core_Commands.kill = {
 	PermissionLevel = 1,
 	Modifyers = {"all","me","others","random","randother","team"},
 	Aliases = {},
-	Run = function(player,target,args)
+	Run = function(player,target,args,flags)
 		if target.Character then
 			target.Character:WaitForChild("Humanoid"):TakeDamage(100)
 		else
@@ -323,7 +361,7 @@ Core_Commands.btools = {
 	RepeatCeiling = 10,
 	Modifyers = {"all","me","others","random","randother","team"},
 	Aliases = {},
-	Run = function(player,target,args)
+	Run = function(player,target,args,flags)
 		local f3x = Fastr.Resources.Btools:Clone()
 		f3x.Parent = target.Backpack
 	end
@@ -335,7 +373,7 @@ Core_Commands.menu = {
 	Usage = ":menu",
 	PermissionLevel = 1,
 	Aliases = {"openmenu","showmenu"},
-	Run = function(player,target,args)
+	Run = function(player,target,args,flags)
 		remotes.OpenMenu:FireClient(player,"Help")
 	end,
 }
@@ -345,7 +383,7 @@ Core_Commands.countdown = {
 	Desc = "shows a countdown on the top of every players screen",
 	Usage = ":countdown <time>",
 	PermissionLevel = 1.5,
-	Run = function(player,target,args)
+	Run = function(player,target,args,flags)
 		if tonumber(args[1]) then
 			remotes.ShowCountdown:FireAllClients(args[1])
 		else
@@ -361,7 +399,7 @@ Core_Commands.freeze = {
 	PermissionLevel = 1.5,
 	Modifyers = {"all"},
 	Aliases = {"anchor","stopmovement"},
-	Run = function(player,target,args)
+	Run = function(player,target,args,flags)
 
 		local char = target.Character or target.Character:Wait()
 
@@ -407,7 +445,7 @@ Core_Commands.unfreeze = {
 	Usage = ":unfreeze <player>",
 	PermissionLevel = 1.5,
 	Modifyers = {"all"},
-	Run = function(player,target,args)
+	Run = function(player,target,args,flags)
 		if target.Character or target.CharacterAdded:Wait() then
 			
 			local char = target.Character
