@@ -7,7 +7,7 @@
       "$className": "ServerScriptService",
       "Fastr_Server": {
         "$className": "Folder",
-        "$path": "src/server"
+        "$path": "src/Server"
       }
     },
     

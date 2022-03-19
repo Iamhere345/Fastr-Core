@@ -23,8 +23,6 @@ game.Players.PlayerAdded:Connect(
 	end
 )
 
-game.ReplicatedStorage
-	:WaitForChild("Fastr_Remotes").ExecuteCommand.OnServerEvent
-	:Connect(function(player, cmd) --this would go in Default_Callbacks if it weren't so important
+game.ReplicatedStorage:WaitForChild("Fastr_Remotes").ExecuteCommand.OnServerEvent:Connect(function(player, cmd) --this would go in Default_Callbacks if it weren't so important
 		Parser.ParseCmd(player, cmd, false) --there are security checks within Parser.ParseCmd()
 	end)
