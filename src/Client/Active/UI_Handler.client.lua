@@ -17,7 +17,7 @@ local Notif_Types = {
 	},
 }
 
-remotes.ShowNotificaiton.OnClientEvent:Connect(function(Type, Msg, TopBarMsg, Colour, Duration)
+remotes.ShowNotification.OnClientEvent:Connect(function(Type, Msg, TopBarMsg, Colour, Duration)
 	if Notif_Types[Type] and Type ~= nil then
 		local TypeActual = Notif_Types[Type]
 
