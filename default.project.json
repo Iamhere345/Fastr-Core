@@ -30,7 +30,10 @@
         },
         "Active": {
           "$className": "ScreenGui",
-          "$path": "src/Client/Active"
+          "$path": "src/Client/Active",
+          "$properties": {
+            "IgnoreGuiInset": true
+          }
         }
       }
     }
