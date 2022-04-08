@@ -11,12 +11,27 @@
       }
     },
     
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "Fastr_Remotes": {
+        "$className": "Folder",
+        "$path": "src/Remotes"
+      }
+    },
+
     "StarterGui": {
       "$className": "StarterGui",
       "Fastr_Client": {
         "$className": "Folder",
-        "$path": "src/Client",
-        "$ignoreUnknownInstances": true
+        "$ignoreUnknownInstances": true,
+        "Resources": {
+          "$className": "Folder",
+          "$path": "src/Client/Resources"
+        },
+        "Active": {
+          "$className": "ScreenGui",
+          "$path": "src/Client/Active"
+        }
       }
     }
 

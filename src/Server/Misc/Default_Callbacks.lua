@@ -6,10 +6,9 @@ local mps = game:GetService("MarketplaceService")
 
 local commands = require(Fastr.Utils.MiscUtils).CompileCommands(Fastr.Core.Commands)
 
-remotes.GetCmdData.OnServerInvoke =
-	function() --this gets every commands metadata and sends them to the client for the :cmds command. this isn't a great place to put it but it's here anyway
-		return commands
-	end
+remotes.GetCmdData.OnServerInvoke = function() --this gets every commands metadata and sends them to the client for the :cmds command. this isn't a great place to put it but it's here anyway
+	return commands
+end
 
 remotes.PromptPurchase.OnServerEvent:Connect(function(player, Purchase)
 	local Store = {
