@@ -48,7 +48,7 @@ MiscUtils.CompileMods = function(CmdTable)
 	end
 end
 
-MiscUtils.DeepCopy = function(t: table)
+MiscUtils.DeepCopy = function(t: {})
 	local tableCopy = {}
 
 	for k, v in pairs(t) do

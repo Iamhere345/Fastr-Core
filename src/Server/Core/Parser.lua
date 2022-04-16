@@ -14,11 +14,11 @@ local Ranks = Settings.Ranks
 local GroupRanks = Settings.GroupRanks
 local prefix = Settings.Prefix
 
-wait(0.25)
+task.wait(0.25)
 
 local Commands = MiscUtils.CompileCommands(CommandsFolder)
 
---Rank oriented functions:
+--Rank functions:
 local function GetPermissionLevel(player) --gets a players permission level. it loops through the ranks table and if it finds the players userid or name as the first value it will return the second value. otherwise it will return 0
 	for i, v in pairs(Ranks) do
 		if v[1] == player.UserId or v[1] == player.Name then
@@ -52,7 +52,7 @@ local function IsValidCommand(cmd) --checks if a command is in the commands tabl
 	end
 end
 
-local function IsValidAliase(cmd) --checks if the command the player has said is an aliase of a command
+local function IsValidAlias(cmd) --checks if the command the player has said is an alias of a command
 	for _, command in pairs(Commands) do
 		if command.Aliases then
 			for i, a in ipairs(command.Aliases) do
@@ -126,7 +126,38 @@ local function RunCmd(args, cmd, cmdFunction) --this is for repeat functionality
 	end
 end
 
-Parser.ParseCmd = function(player, msg, UsingPrefix)
+local function getQuotedArgs(args: {})
+
+	for i,arg in ipairs(args) do
+		if string.sub(arg, 0, 1) == '"' then
+			
+			print("start quote")
+
+			for x = i,#args,1 do
+
+				print(args[x])
+
+				if string.sub(args[x],string.len(args[x]-1),string.len(args[x])) == '"' then
+					print("end quote")
+					print(i.." "..i+x)
+					arg = table.concat(args,i,x)
+					break
+				end
+
+			end
+
+		else
+
+			print("no quote: "..arg)
+
+		end
+	end
+
+	return args
+
+end
+
+Parser.ParseCmd = function(player: Player, msg: string, UsingPrefix: boolean)
 	CheckGroupPerms(player)
 	GetDefaultRank(player)
 
@@ -142,19 +173,25 @@ Parser.ParseCmd = function(player, msg, UsingPrefix)
 	end
 
 	string.lower(CommandStr)
-	table.remove(args, 1)
+	table.remove(args, 1) --remove the command from the args table (because the command isn't an argument)
 
-	args, flags = GetFlags(args)
+	print(args)
 
-	if IsValidCommand(CommandStr) or IsValidAliase(CommandStr) then --check if the command is valid
-		if IsValidAliase(CommandStr) then
-			CommandStr = IsValidAliase(CommandStr)
+	args, flags = GetFlags(args) --seperate the flags from the args
+	args = getQuotedArgs(args)
+
+	print(args)
+
+	if IsValidCommand(CommandStr) or IsValidAlias(CommandStr) then --check if the command is valid
+		if IsValidAlias(CommandStr) then
+			CommandStr = IsValidAlias(CommandStr) --gets the command from the alias
 		end
 
 		local command = Commands[string.lower(CommandStr)]
 		local Modifyers = command.Modifyers
 
 		if command.PermissionLevel <= rank then
+
 			do --checks for control characters
 				if table.find(args, Settings.PipeChar) then --this means the user wants to pipe a command to another command
 					--prep args for piping

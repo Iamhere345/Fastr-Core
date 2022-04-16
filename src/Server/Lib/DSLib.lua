@@ -16,9 +16,9 @@ local Key = Settings.Key
 local function SafeGet(
 	key: string,
 	error_msg: string,
-	show_error: bool,
-	player: Object,
-	kickOnError: bool,
+	show_error: boolean,
+	player: Player,
+	kickOnError: boolean,
 	timeout: number
 )
 	local data
@@ -54,12 +54,12 @@ local function SafeGet(
 end
 
 local function SafeSet(
-	key: String,
+	key: string,
 	data: any,
 	error_msg: string,
 	show_error: string,
-	player: Object,
-	kickOnError: bool,
+	player: Player,
+	kickOnError: boolean,
 	timeout: number
 )
 	local s, r
@@ -198,7 +198,7 @@ DSLib.Ban = function(player, days, user, note)
 	end
 end
 
-DSLib.Unban = function(user: Object, userId: number) --user id of the
+DSLib.Unban = function(user: Player, userId: number) --user id of the
 	local data = SafeGet(userId .. "-" .. Key, "Unable to unban player... Please try again", true, user, false, 20)
 
 	if data then
@@ -214,7 +214,7 @@ DSLib.Unban = function(user: Object, userId: number) --user id of the
 	end
 end
 
-wait(0.1)
+task.wait(0.1)
 
 for _, p in pairs(game.Players:GetPlayers()) do
 	print(p.Name)

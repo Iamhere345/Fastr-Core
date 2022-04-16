@@ -14,10 +14,17 @@ Settings.GroupRanks = { --if someone in a specific group has a specific rank, th
 
 Settings.DefaultRank = 0
 
-Settings.SoftLoad = false --setting this to false will mean that if you have a bigger game with a lot of parts you may expirience some lag for a few seconds. setting this to true will mean that fastr will load a bit slower, but there will be no lag
+Settings.SoftLoad = false --setting this to true will mean that fastr will load slower. if you have a game that loads a lot of thing as soon as the server starts, you may want to load fastr a bit later
 
 Settings.Key = "FN6akfa93" --IMPORTANT change this to a random string of numbers and letters
 
+--control characters
 Settings.Prefix = ":"
 
-return Settings --this is outdated.
+Settings.PipeChar  = "|"
+
+Settings.RepeatChar = "*"
+
+Settings.AndChar = "+"
+
+return Settings
