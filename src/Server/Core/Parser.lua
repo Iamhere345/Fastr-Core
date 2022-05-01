@@ -258,7 +258,7 @@ Parser.ParseCmd = function(player: Player, msg: string, UsingPrefix: boolean)
 
 						RunCmd(args, command, function()
 							for i, target in pairs(targets) do
-								command.Run(player, target, args, flags) --TODO add flags to run parameters
+								command.Run(player, target, args, flags)
 							end
 						end)
 					end

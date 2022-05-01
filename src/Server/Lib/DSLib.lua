@@ -113,18 +113,15 @@ local function OnPlayerAdded(player)
 					.. ". \n Moderator note: "
 					.. data.Bans[1].mod_note
 			)
-		else
-			print("no kick")
 		end
 	end
 end
 
 DSLib.Ban = function(player, days, user, note)
-	print(note)
 
 	local data = SafeGet(
 		player.UserId .. "-" .. Key,
-		"Fastr: error getting player moderation data for ban. Moderation data may be wiped.",
+		"Fastr: error getting player moderation data for ban. Moderation data may have be wiped.",
 		false,
 		user,
 		false,

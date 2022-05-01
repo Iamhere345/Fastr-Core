@@ -3,13 +3,17 @@ local Core_Commands = {}
 local Fastr = script.Parent.Parent.Parent
 
 local ArgLib = require(Fastr:WaitForChild("Lib"):WaitForChild("ArgLib"))
-local DSLib = require(Fastr:WaitForChild("Lib"):WaitForChild("DSLib"))
+local DSLib: {}? = nil
 
 local UIUtils = require(Fastr:WaitForChild("Utils"):WaitForChild("UIUtils"))
 
 local TextService = game:GetService("TextService")
 local Resources = Fastr.Resources
 local remotes = game.ReplicatedStorage.Fastr_Remotes
+
+task.spawn(function()
+	DSLib = require(Fastr.Lib:WaitForChild("DSLib"))
+end)
 
 -- selene: allow(unused_variable)
 Core_Commands.cmds = {
@@ -258,7 +262,6 @@ Core_Commands.fly = {
 		local noclip_enabled
 		
 		if table.find(flags,"-n") then
-			print("FSAO:FESWNIDK:")
 			noclip_enabled = true
 		else
 			noclip_enabled = false
@@ -282,6 +285,11 @@ Core_Commands.ban = {
 			return
 		end
 		
+		if not DSLib then
+			UIUtils.Notify(player,"Error","Fastr's moderation system hasn't loaded in yet. Please try again soon")
+			return
+		end
+
 		local days
 		
 		if table.find(flags,"-P") then days = 99e9 else days = tonumber(args[2]) end
@@ -308,7 +316,14 @@ Core_Commands.unban = {
 	PermissionLevel = 2,
 	Modfyers = {},
 	Run = function(player,target,args,flags)
+
+		if not DSLib then
+			UIUtils.Notify(player,"Error","Fastr's moderation system hasn't loaded in yet. Please try again soon")
+			return
+		end
+
 		if args[1] then
+
 			if game.Players:GetUserIdFromNameAsync(args[1]) then
 				DSLib.Unban(player,game.Players:GetUserIdFromNameAsync(args[1]))
 			else
