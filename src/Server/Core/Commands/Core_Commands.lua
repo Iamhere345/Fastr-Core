@@ -7,7 +7,6 @@ local DSLib: {}? = nil
 
 local UIUtils = require(Fastr:WaitForChild("Utils"):WaitForChild("UIUtils"))
 
-local TextService = game:GetService("TextService")
 local Resources = Fastr.Resources
 local remotes = game.ReplicatedStorage.Fastr_Remotes
 
