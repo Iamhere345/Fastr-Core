@@ -26,86 +26,6 @@ local camCF: RBXScriptConnection
 
 
 local function fly(noclip_enabled)
-	--[[flying = true
-	char.Humanoid.PlatformStand = true
-
-	char.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
-
-	BodyGyro = Instance.new("BodyGyro", hrp)
-	BodyGyro.MaxTorque = Vector3.new(5000, 5000, 5000)
-	BodyGyro.P = 2500
-	BodyGyro.CFrame = hrp.CFrame
-	BodyGyro.D = 250
-
-	BodyVel = Instance.new("BodyVelocity", hrp)
-	BodyVel.MaxForce = Vector3.new(5000, 5000, 5000)
-	BodyVel.P = 2500
-	BodyVel.Velocity = Vector3.new(0, 0, 0)
-
-	if ForwardToggle == true then
-		BodyVel.Velocity = camera.CFrame.LookVector * 65
-	end
-
-	camCF = camera:GetPropertyChangedSignal("CFrame"):Connect(function() --TODO: switch to CAS
-		if uis:IsKeyDown(Enum.KeyCode.W) or ForwardToggle == true then
-			BodyVel.Velocity = camera.CFrame.LookVector * 65
-		end
-
-		if uis:IsKeyDown(Enum.KeyCode.A) then
-			BodyVel.Velocity = camera.CFrame.RightVector * -65
-		end
-
-		if uis:IsKeyDown(Enum.KeyCode.S) then
-			BodyVel.Velocity = camera.CFrame.LookVector * -65
-		end
-
-		if uis:IsKeyDown(Enum.KeyCode.D) then
-			BodyVel.Velocity = camera.CFrame.RightVector * 65
-		end
-
-		if uis:IsKeyDown(Enum.KeyCode.R) then
-			BodyVel.Velocity = camera.CFrame.UpVector * 65
-		end
-
-		if uis:IsKeyDown(Enum.KeyCode.F) then
-			BodyVel.Velocity = camera.CFrame.UpVector * -65
-		end
-
-		if BodyGyro and BodyGyro.Parent then
-			BodyGyro.CFrame = camera.CFrame
-		end
-	end)
-
-	IE = uis.InputEnded:Connect(function(input)
-		if input.KeyCode == Enum.KeyCode.W then
-			BodyVel.Velocity = Vector3.new(0, 0, 0)
-		end
-		if input.KeyCode == Enum.KeyCode.A then
-			BodyVel.Velocity = Vector3.new(0, 0, 0)
-		end
-		if input.KeyCode == Enum.KeyCode.S then
-			BodyVel.Velocity = Vector3.new(0, 0, 0)
-		end
-		if input.KeyCode == Enum.KeyCode.D then
-			BodyVel.Velocity = Vector3.new(0, 0, 0)
-		end
-		if input.KeyCode == Enum.KeyCode.R then
-			BodyVel.Velocity = Vector3.new(0, 0, 0)
-		end
-		if input.KeyCode == Enum.KeyCode.F then
-			BodyVel.Velocity = Vector3.new(0, 0, 0)
-		end
-	end)
-
-	if noclip_enabled then
-		NE = game:GetService("RunService").Stepped:Connect(function()
-			for _, v in pairs(char:GetDescendants()) do
-				if v:IsA("BasePart") then
-					v.CanCollide = false
-				end
-			end
-		end)
-	end]]
 
 	flying = true
 
@@ -135,6 +55,14 @@ local function fly(noclip_enabled)
 		local input: Vector3 = controls:GetMoveVector()
 
 		BodyVel.Velocity = ((camera.CFrame * CFrame.new(input.X, velY, input.Z)).Position - camera.CFrame.Position) * speed
+
+		if noclip_enabled then
+			for _,v in pairs(char:GetDescendants()) do
+				if v:IsA("BasePart") then
+					v.CanCollide = false
+				end
+			end
+		end
 
 	end)
 
@@ -167,6 +95,8 @@ local function fly(noclip_enabled)
 		end
 
 	end)
+
+
 
 end
 
