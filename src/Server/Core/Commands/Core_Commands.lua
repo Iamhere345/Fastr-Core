@@ -377,7 +377,7 @@ Core_Commands.btools = {
 	Modifyers = {"all","me","others","random","randother","team"},
 	Aliases = {},
 	Run = function(player,target,args,flags)
-		local f3x = Fastr.Resources.Btools:Clone()
+		local f3x = Resources.Btools:Clone()
 		f3x.Parent = target.Backpack
 	end
 }

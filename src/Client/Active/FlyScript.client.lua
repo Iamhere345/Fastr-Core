@@ -1,22 +1,32 @@
+--//services
 local uis = game:GetService("UserInputService")
 local cas = game:GetService("ContextActionService")
+local rs = game:GetService("RunService")
 local tween = game:GetService("TweenService")
+--//references
 local player = game.Players.LocalPlayer
 local char = player.Character or player.CharacterAdded:Wait()
 local hrp = char:WaitForChild("HumanoidRootPart")
+local humanoid = char:WaitForChild("Humanoid")
 local camera = workspace.CurrentCamera
+local BodyVel: BodyVelocity
+local BodyGyro: BodyGyro
+--//dependencies
+local playerModule = require(player.PlayerScripts:WaitForChild("PlayerModule"))
+--//logic
+local speed: number = 30
 local ForwardToggle = false
-local BodyVel
-local BodyGyro
-local camCF
-local IE
-local IB
-local TF
-local NE
 local flying = false
+--//connections
+local IE: RBXScriptConnection
+local IB: RBXScriptConnection
+local TF: RBXScriptConnection
+local NE: RBXScriptConnection
+local camCF: RBXScriptConnection
+
 
 local function fly(noclip_enabled)
-	flying = true
+	--[[flying = true
 	char.Humanoid.PlatformStand = true
 
 	char.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
@@ -95,7 +105,69 @@ local function fly(noclip_enabled)
 				end
 			end
 		end)
-	end
+	end]]
+
+	flying = true
+
+	humanoid.PlatformStand = true
+	hrp.Velocity = Vector3.new(0, 0, 0)
+
+	local controls = playerModule:GetControls()
+	local velY: number = 0
+
+	BodyGyro = Instance.new("BodyGyro", hrp)
+	BodyGyro.MaxTorque = Vector3.new(5000, 5000, 5000)
+	BodyGyro.P = 2500
+	BodyGyro.CFrame = hrp.CFrame
+	BodyGyro.D = 250
+
+	BodyVel = Instance.new("BodyVelocity", hrp)
+	BodyVel.MaxForce = Vector3.new(5000, 5000, 5000)
+	BodyVel.P = 2500
+	BodyVel.Velocity = Vector3.new(0, 0, 0)
+
+	camCF =  camera:GetPropertyChangedSignal("CFrame"):Connect(function()
+		BodyGyro.CFrame = camera.CFrame
+		print(controls:GetMoveVector())
+	end)
+
+	rs.RenderStepped:Connect(function()
+		local input: Vector3 = controls:GetMoveVector()
+
+		BodyVel.Velocity = ((camera.CFrame * CFrame.new(input.X, velY, input.Z)).Position - camera.CFrame.Position) * speed
+
+	end)
+
+	IB  = uis.InputBegan:Connect(function(input, internallyProcessed)
+		
+		if internallyProcessed then return end
+
+		if input.KeyCode == Enum.KeyCode.R then
+			if velY == -1 then
+				velY = 0
+			else
+				velY = 1
+			end
+		elseif input.KeyCode == Enum.KeyCode.F then
+			if velY == 1 then
+				velY = 0
+			else
+				velY = -1
+			end
+		end
+
+	end)
+
+	IE = uis.InputEnded:Connect(function(input, internallyProcessed)
+		
+		if internallyProcessed then return end
+
+		if input.KeyCode == Enum.KeyCode.R or input.KeyCode == Enum.KeyCode.F then
+			velY = 0
+		end
+
+	end)
+
 end
 
 local function StopFlying()
