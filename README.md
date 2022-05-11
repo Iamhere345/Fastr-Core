@@ -4,4 +4,6 @@
  
  ## Features:
  
- # This new readme file is a work in progress. For more information, please visit the docs site.
+### Easy to use
+
+Fastr works you you expect it to work
