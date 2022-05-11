@@ -14,11 +14,11 @@ local Ranks = Settings.Ranks
 local GroupRanks = Settings.GroupRanks
 local prefix = Settings.Prefix
 
-wait(0.25)
+task.wait(0.25)
 
 local Commands = MiscUtils.CompileCommands(CommandsFolder)
 
---Rank oriented functions:
+--Rank functions:
 local function GetPermissionLevel(player) --gets a players permission level. it loops through the ranks table and if it finds the players userid or name as the first value it will return the second value. otherwise it will return 0
 	for i, v in pairs(Ranks) do
 		if v[1] == player.UserId or v[1] == player.Name then
@@ -52,7 +52,7 @@ local function IsValidCommand(cmd) --checks if a command is in the commands tabl
 	end
 end
 
-local function IsValidAliase(cmd) --checks if the command the player has said is an aliase of a command
+local function IsValidAlias(cmd) --checks if the command the player has said is an alias of a command
 	for _, command in pairs(Commands) do
 		if command.Aliases then
 			for i, a in ipairs(command.Aliases) do
@@ -109,6 +109,36 @@ local function GetFlags(args: table)
 	return args, flags
 end
 
+local function getQuotedArgs(args: {string}) --TODO allow multiple quoted args
+
+	args = table.concat(args, " ")
+ 
+	if string.find(args, '%b""') then
+		
+	 local startStr, endStr = string.find(args, '%b""')
+ 
+	 local beforeQuote = string.sub(args, 0, startStr-2)
+	 beforeQuote = string.split(beforeQuote, " ")
+	 
+	 local afterQuote = string.sub(args, endStr+2, -1) --the plus and minus two get rid of the quotation mark and space
+	 afterQuote = string.split(afterQuote, " ")
+ 
+	 table.insert(beforeQuote, string.match(args, '%b""'))
+	 
+	 for _,v in pairs(afterQuote) do
+		 table.insert(beforeQuote, v)
+	 end
+ 
+	 args = beforeQuote
+ 
+	 return args
+ 
+	end
+	 
+	return string.split(args, " ")
+ 
+ end
+
 --misc functions
 
 local function RunCmd(args, cmd, cmdFunction) --this is for repeat functionality
@@ -126,7 +156,7 @@ local function RunCmd(args, cmd, cmdFunction) --this is for repeat functionality
 	end
 end
 
-Parser.ParseCmd = function(player, msg, UsingPrefix)
+Parser.ParseCmd = function(player: Player, msg: string, UsingPrefix: boolean)
 	CheckGroupPerms(player)
 	GetDefaultRank(player)
 
@@ -142,19 +172,25 @@ Parser.ParseCmd = function(player, msg, UsingPrefix)
 	end
 
 	string.lower(CommandStr)
-	table.remove(args, 1)
+	table.remove(args, 1) --remove the command from the args table (because the command isn't an argument)
 
-	args, flags = GetFlags(args)
+	print(args)
 
-	if IsValidCommand(CommandStr) or IsValidAliase(CommandStr) then --check if the command is valid
-		if IsValidAliase(CommandStr) then
-			CommandStr = IsValidAliase(CommandStr)
+	args, flags = GetFlags(args) --seperate the flags from the args
+	args = getQuotedArgs(args) --There can only be one quoted arg currently
+
+	print(args)
+
+	if IsValidCommand(CommandStr) or IsValidAlias(CommandStr) then --check if the command is valid
+		if IsValidAlias(CommandStr) then
+			CommandStr = IsValidAlias(CommandStr) --gets the command from the alias
 		end
 
 		local command = Commands[string.lower(CommandStr)]
 		local Modifyers = command.Modifyers
 
 		if command.PermissionLevel <= rank then
+
 			do --checks for control characters
 				if table.find(args, Settings.PipeChar) then --this means the user wants to pipe a command to another command
 					--prep args for piping
@@ -221,7 +257,7 @@ Parser.ParseCmd = function(player, msg, UsingPrefix)
 
 						RunCmd(args, command, function()
 							for i, target in pairs(targets) do
-								command.Run(player, target, args, flags) --TODO add flags to run parameters
+								command.Run(player, target, args, flags)
 							end
 						end)
 					end

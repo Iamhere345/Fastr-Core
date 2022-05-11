@@ -11,7 +11,7 @@ ArgLib.CheckMod = function(player, PossibleMod, args)
 	end
 end
 
-ArgLib.player = function(player: Object, Target: string)
+ArgLib.player = function(player: Player, Target: string)
 	print("fired player")
 
 	local function GetPlayer(name: string)
@@ -58,7 +58,6 @@ ArgLib.player = function(player: Object, Target: string)
 			elseif displayStart == 1 then --same thing but for display names
 				table.insert(PossiblePlayers, string.lower(v.DisplayName))
 			end
-		else
 		end
 	end
 
