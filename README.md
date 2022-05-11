@@ -4,6 +4,4 @@
  
  ## Features:
  
-### Easy to use
-
-Fastr works you you expect it to work
+### WIP, view docs site for more info
