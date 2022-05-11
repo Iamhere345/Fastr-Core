@@ -109,6 +109,36 @@ local function GetFlags(args: table)
 	return args, flags
 end
 
+local function getQuotedArgs(args: {string}) --TODO allow multiple quoted args
+
+	args = table.concat(args, " ")
+ 
+	if string.find(args, '%b""') then
+		
+	 local startStr, endStr = string.find(args, '%b""')
+ 
+	 local beforeQuote = string.sub(args, 0, startStr-2)
+	 beforeQuote = string.split(beforeQuote, " ")
+	 
+	 local afterQuote = string.sub(args, endStr+2, -1) --the plus and minus two get rid of the quotation mark and space
+	 afterQuote = string.split(afterQuote, " ")
+ 
+	 table.insert(beforeQuote, string.match(args, '%b""'))
+	 
+	 for _,v in pairs(afterQuote) do
+		 table.insert(beforeQuote, v)
+	 end
+ 
+	 args = beforeQuote
+ 
+	 return args
+ 
+	end
+	 
+	return string.split(args, " ")
+ 
+ end
+
 --misc functions
 
 local function RunCmd(args, cmd, cmdFunction) --this is for repeat functionality
@@ -124,37 +154,6 @@ local function RunCmd(args, cmd, cmdFunction) --this is for repeat functionality
 	else
 		cmdFunction()
 	end
-end
-
-local function getQuotedArgs(args: {})
-
-	for i,arg in ipairs(args) do
-		if string.sub(arg, 0, 1) == '"' then
-			
-			print("start quote")
-
-			for x = i,#args,1 do
-
-				print(args[x])
-
-				if string.sub(args[x],string.len(args[x]-1),string.len(args[x])) == '"' then
-					print("end quote")
-					print(i.." "..i+x)
-					arg = table.concat(args,i,x)
-					break
-				end
-
-			end
-
-		else
-
-			print("no quote: "..arg)
-
-		end
-	end
-
-	return args
-
 end
 
 Parser.ParseCmd = function(player: Player, msg: string, UsingPrefix: boolean)
@@ -178,7 +177,7 @@ Parser.ParseCmd = function(player: Player, msg: string, UsingPrefix: boolean)
 	print(args)
 
 	args, flags = GetFlags(args) --seperate the flags from the args
-	args = getQuotedArgs(args)
+	args = getQuotedArgs(args) --There can only be one quoted arg currently
 
 	print(args)
 
