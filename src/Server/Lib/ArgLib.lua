@@ -58,7 +58,6 @@ ArgLib.player = function(player: Player, Target: string)
 			elseif displayStart == 1 then --same thing but for display names
 				table.insert(PossiblePlayers, string.lower(v.DisplayName))
 			end
-		else
 		end
 	end
 

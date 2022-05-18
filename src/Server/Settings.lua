@@ -14,10 +14,17 @@ Settings.GroupRanks = { --if someone in a specific group has a specific rank, th
 
 Settings.DefaultRank = 0
 
-Settings.SoftLoad = false --setting this to false will mean that if you have a bigger game with a lot of parts you may expirience some lag for a few seconds. setting this to true will mean that fastr will load a bit slower, but there will be no lag
+Settings.waitForDS = false --wait for moderation data to load before loading the rest of the system
 
-Settings.Key = "FN6akfa93" --IMPORTANT change this to a random string of numbers and letters
+Settings.Key = "FN6akfa93" --the key that Fastr's datastore will use. If you change this you will lose all of Fastr's moderation data
 
+--control characters
 Settings.Prefix = ":"
 
-return Settings --this is outdated.
+Settings.PipeChar  = "|"
+
+Settings.RepeatChar = "*"
+
+Settings.AndChar = "+"
+
+return Settings
