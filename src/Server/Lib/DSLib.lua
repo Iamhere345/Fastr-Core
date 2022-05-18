@@ -13,14 +13,7 @@ local Key = Settings.Key
 --for any of the stuff here to work in studio please turn studio access to api on.
 --currently this module is only used for the ban command, but you can put all of your command's datastore stuff here as well
 
-local function SafeGet(
-	key: string,
-	error_msg: string,
-	show_error: bool,
-	player: Object,
-	kickOnError: bool,
-	timeout: number
-)
+local function SafeGet(key: string, error_msg: string, show_error: boolean, player: Player, kickOnError: boolean, timeout: number)
 	local data
 	local s, r
 	local i = 0
@@ -53,15 +46,7 @@ local function SafeGet(
 	end
 end
 
-local function SafeSet(
-	key: String,
-	data: any,
-	error_msg: string,
-	show_error: string,
-	player: Object,
-	kickOnError: bool,
-	timeout: number
-)
+local function SafeSet(key: string, data: any, error_msg: string, show_error: string, player: Player, kickOnError: boolean, timeout: number)
 	local s, r
 	local i = 0
 
@@ -198,8 +183,8 @@ DSLib.Ban = function(player, days, user, note)
 	end
 end
 
-DSLib.Unban = function(user: Object, userId: number) --user id of the
-	local data = SafeGet(userId .. "-" .. Key, "Unable to unban player... Please try again", true, user, false, 20)
+DSLib.Unban = function(user: Player, userId: number)
+	local data = SafeGet(userId .. "-" .. Key, "Unable to unban player. Please try again", true, user, false, 20)
 
 	if data then
 		if data.Bans[1].ban_time[1] > tick() then
@@ -214,7 +199,7 @@ DSLib.Unban = function(user: Object, userId: number) --user id of the
 	end
 end
 
-wait(0.1)
+task.wait(0.1)
 
 for _, p in pairs(game.Players:GetPlayers()) do
 	print(p.Name)

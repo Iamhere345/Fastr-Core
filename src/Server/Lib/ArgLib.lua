@@ -11,7 +11,7 @@ ArgLib.CheckMod = function(player, PossibleMod, args)
 	end
 end
 
-ArgLib.player = function(player: Object, Target: string)
+ArgLib.player = function(player: Player, Target: string)
 	print("fired player")
 
 	local function GetPlayer(name: string)
