@@ -1,7 +1,6 @@
 # Summary
 
 - [Introduction](./Introduction.md)
-- [Motivation](./Motivation.md)
 - [Installation](./Installation.md)
 
 - [Usage](./Usage.md)
