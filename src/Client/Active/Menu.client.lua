@@ -31,7 +31,7 @@ OpenMenu.OnClientEvent:Connect(function(page)
 
 	Menu.Parent = script.Parent
 
-	for i, tab in pairs(Menu.Tabs:GetChildren()) do
+	for _, tab in pairs(Menu.Tabs:GetChildren()) do
 		if tab.ClassName ~= "UIListLayout" then
 			local t1 = tab.MouseEnter:Connect(function()
 				TweenService:Create(tab, TweenInfo.new(0.25), { Transparency = 0.5 }):Play()

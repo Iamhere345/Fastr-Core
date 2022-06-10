@@ -11,7 +11,7 @@ local HARD_TIMEOUT = 20 -- timeout constant incase someone sets a timeout to som
 currently this module is only used for the ban command, but you can put all of your command's datastore stuff here as well
 ]]
 
-DSLib = {}
+local DSLib = {}
 DSLib.__index = DSLib
 
 function DSLib.new()

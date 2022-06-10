@@ -4,7 +4,7 @@ local Core_Commands = {}
 local Fastr = script.Parent.Parent.Parent
 
 local ArgLib = require(Fastr:WaitForChild("Lib"):WaitForChild("ArgLib"))
-local DSLib: {}? = nil
+local ModLib: {}? = nil
 
 local UIUtils = require(Fastr:WaitForChild("Utils"):WaitForChild("UIUtils"))
 
@@ -12,7 +12,7 @@ local Resources = Fastr.Resources
 local remotes = game.ReplicatedStorage.Fastr_Remotes
 
 task.spawn(function()
-	DSLib = require(Fastr.Lib:WaitForChild("DSLib"))
+	ModLib = require(Fastr.Lib:WaitForChild("ModLib"))
 end)
 
 Core_Commands.cmds = {
@@ -284,7 +284,7 @@ Core_Commands.ban = {
 			return
 		end
 		
-		if not DSLib then
+		if not ModLib then
 			UIUtils.Notify(player,"Error","Fastr's moderation system hasn't loaded in yet. Please try again soon")
 			return
 		end
@@ -310,7 +310,7 @@ Core_Commands.ban = {
 			note = "no note provided"
 		end
 		
-		DSLib.Ban(target,days,player,note)
+		ModLib:banPlr(target, days, player, note)
 	end,
 }
 
@@ -322,7 +322,7 @@ Core_Commands.unban = {
 	Modfyers = {},
 	Run = function(player,target,args,flags)
 
-		if not DSLib then
+		if not ModLib then
 			UIUtils.Notify(player,"Error","Fastr's moderation system hasn't loaded in yet. Please try again soon")
 			return
 		end
@@ -330,7 +330,7 @@ Core_Commands.unban = {
 		if args[1] then
 
 			if game.Players:GetUserIdFromNameAsync(args[1]) then
-				DSLib.Unban(player,game.Players:GetUserIdFromNameAsync(args[1]))
+				ModLib.unbanPlr(player,game.Players:GetUserIdFromNameAsync(args[1]))
 			else
 				UIUtils.Notify("Error","Not a valid player")
 			end
