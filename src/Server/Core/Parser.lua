@@ -5,7 +5,7 @@ local Parser = {}
 local Fastr = script.Parent.Parent
 local CommandsFolder = Fastr:WaitForChild("Core").Commands
 --//dependencies
-local ArgLib = require(Fastr:WaitForChild("Lib"):WaitForChild("ArgLibOOP")).new()
+local ArgLib = require(Fastr:WaitForChild("Lib"):WaitForChild("ArgLib")).new()
 local MiscUtils = require(Fastr:WaitForChild("Utils").MiscUtils)
 local UIUtils = require(Fastr:WaitForChild("Utils"):WaitForChild("UIUtils"))
 local Settings = require(Fastr:WaitForChild("Settings"))
