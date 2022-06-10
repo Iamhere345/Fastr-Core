@@ -1,6 +1,5 @@
 --//services
 local uis = game:GetService("UserInputService")
-local cas = game:GetService("ContextActionService")
 local rs = game:GetService("RunService")
 local tween = game:GetService("TweenService")
 --//references

@@ -8,12 +8,12 @@ MiscUtils.CompileCommands = function(Root)
 		MakeEdits = require(script.CoreCommandsEdits)
 	end
 
-	for i, v in pairs(Root:GetChildren()) do
+	for _, v in pairs(Root:GetChildren()) do
 		if v:IsA("ModuleScript") then
 			local CommandTable = require(v)
 
-			for i, v in pairs(CommandTable) do
-				compiledTable[string.lower(v.Name)] = v --this is how you can have a command with an uppercase name have fastr still work with that command
+			for _, command in pairs(CommandTable) do
+				compiledTable[string.lower(command.Name)] = command --this is how you can have a command with an uppercase name have fastr still work with that command
 			end
 
 			if v.Name == "Core_Commands" and MakeEdits then
@@ -39,6 +39,7 @@ MiscUtils.CompileMods = function(CmdTable)
 
 	for _, cmd in pairs(CmdTable) do
 		if cmd.Modifyers then
+			-- selene: allow(unused_variable)
 			for x, mod in pairs(cmd.Modifyers) do
 				if fnMods[mod] then
 					GetFnMods(mod, cmd.Modifyers)

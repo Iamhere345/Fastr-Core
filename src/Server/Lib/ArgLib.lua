@@ -1,57 +1,78 @@
-local ArgLib = {}
---these functions are called whenever a player uses the corresponding argument
-local Fastr = script.Parent.Parent
-local UIUtils = require(Fastr:WaitForChild("Utils"):WaitForChild("UIUtils"))
+--# selene: allow(unused_variable)
+local Players = game:GetService("Players")
 
-ArgLib.CheckMod = function(player, PossibleMod, args)
-	if ArgLib[PossibleMod] then
-		return ArgLib[PossibleMod](player, PossibleMod, args)
-	else
-		return nil
-	end
+local Fastr = script.Parent.Parent
+local UIUtils = require(Fastr:WaitForChild("Utils").UIUtils)
+
+local ArgLib = {}
+ArgLib.__index = {}
+
+
+function ArgLib.new()
+    return setmetatable({
+		controlArgs = {
+			["all"] = true,
+			["me"] = true,
+			["others"] = true,
+			["randother"] = true,
+			["random"] = true,
+			["team"] = true,
+		},
+	}, ArgLib)
 end
 
-ArgLib.player = function(player: Player, Target: string)
-	print("fired player")
+function ArgLib:checkMod(player: Player, mod, args)
+    if self[mod] then
+        return self[mod](player, mod, args)
+    else
+        return nil
+    end
+end
 
-	local function GetPlayer(name: string)
-		for _, p in pairs(game.Players:GetPlayers()) do
-			if string.lower(p.Name) == name then
-				return p
+function ArgLib:getPlayerTarget(player: Player, target: string): Player
+
+    print("fired player")
+
+	local function getPlayer(name: string)
+		for _, plr in Players:GetPlayers() do
+
+			if string.lower(plr.Name) == name then
+				return plr
+			end
+
+		end
+	end
+
+	local function getPlayerByDisplayName(displayName: string)
+		for _, plr in Players:GetPlayers() do
+			if string.lower(plr.DisplayName) == displayName then
+				return plr
 			end
 		end
 	end
 
-	local function GetPlayerByDisplayName(displayName: string)
-		for _, p in pairs(game.Players:GetPlayers()) do
-			if string.lower(p.DisplayName) == displayName then
-				return p
-			end
-		end
-	end
-
-	if not Target then
+	if not target then
 		return nil
 	end
 
-	Target = string.lower(Target)
+	target = string.lower(target)
 
-	if GetPlayer(Target) then --if the player has typed in the full username of the target
-		return GetPlayer(Target)
+	if getPlayer(target) then --if the player has typed in the full username of the target
+		return getPlayer(target)
 	end
 
-	if GetPlayerByDisplayName(Target) then
-		return GetPlayerByDisplayName(Target)
+	if getPlayerByDisplayName(target) then
+		return getPlayerByDisplayName(target)
 	end
 
 	local PossiblePlayers = {}
 
-	for i, v in pairs(game.Players:GetPlayers()) do --loops through players
-		if string.find(string.lower(v.Name), Target) or string.find(string.lower(v.DisplayName), Target) then --if the the given shortened player name if found in the players username or display name
+	for _, v in pairs(Players:GetPlayers()) do --loops through players
+		if string.find(string.lower(v.Name), target) or string.find(string.lower(v.DisplayName), target) then --if the the given shortened player name if found in the players username or display name
 			print("found match")
 
-			local usernameStart, usernameEnd = string.find(string.lower(v.Name), Target)
-			local displayStart, DisplayEnd = string.find(string.lower(v.DisplayName), Target)
+			local usernameStart, usernameEnd = string.find(string.lower(v.Name), target)
+			local displayStart, DisplayEnd = string.find(string.lower(v.DisplayName), target)
 
 			if usernameStart == 1 then --if the string found starts at the start of the string having ":cmd here" when the username is Iamhere is unexpected behavior
 				table.insert(PossiblePlayers, string.lower(v.Name))
@@ -63,18 +84,18 @@ ArgLib.player = function(player: Player, Target: string)
 
 	local BestMatch = "no-one"
 
-	for _, v in pairs(PossiblePlayers) do
+	for _, v in PossiblePlayers do
 		print(v)
 	end
 
-	for i, v in pairs(PossiblePlayers) do --loop through the candidates for the what the player meant
+	for i, v in PossiblePlayers do --loop through the candidates for the what the player meant
 		print("looping")
 
 		if i == 1 then --at the start of the loop, there is no best match, therefor by default the first candidate is the first best match
 			BestMatch = v
 		else
-			local usernameStart, usernameEnd = string.find(v, Target)
-			local bestMatch_start, bestMatch_end = string.find(BestMatch, Target)
+			local usernameStart, usernameEnd = string.find(v, target)
+			local bestMatch_start, bestMatch_end = string.find(BestMatch, target)
 
 			if usernameEnd > bestMatch_end then
 				BestMatch = v
@@ -85,75 +106,83 @@ ArgLib.player = function(player: Player, Target: string)
 		end
 	end
 
-	for i, v in pairs(game.Players:GetPlayers()) do --this block converts the players displayName into the players Username for execution
+	for _, v in Players:GetPlayers() do --this block converts the players displayName into the players Username for execution
 		if string.lower(v.DisplayName) == BestMatch then
 			BestMatch = string.lower(v.Name)
 		end
 	end
 
-	if GetPlayer(BestMatch) then
-		return GetPlayer(BestMatch) --other mods would return a table, because some of them have multiple targets (e.g ArgLib.all), and all of them apart from this mod are executed in the same way. since arglib.player is 'special' it only needs to return a single value
-	else
-		--UIUtils.Notify(player,"Error","not a valid player name")
-	end
-end
-
-ArgLib.me = function(player)
-	return { player }
-end
-
-ArgLib.others = function(player)
-	local OthersTable = {}
-
-	for i, v in pairs(game.Players:GetPlayers()) do
-		if v ~= player then
-			table.insert(OthersTable, v)
-		end
+	if getPlayer(BestMatch) then
+		return getPlayer(BestMatch) --other mods would return a table, because some of them have multiple targets (e.g ArgLib.all), and all of them apart from this mod are executed in the same way. since arglib.player is 'special' it only needs to return a single value
 	end
 
-	return OthersTable
 end
 
-ArgLib.all = function()
-	return game.Players:GetPlayers()
+function ArgLib:me(player: Player)
+    return { player }
 end
 
-ArgLib.random = function()
-	return { game.Players:GetPlayers()[math.random(1, #game.Players:GetPlayers())] }
+function ArgLib:others(player: Player)
+    local others = {}
+
+    for _, plr in Players:GetPlayers() do -- this for loop may be inconsistent with other for loops because it doesn't use the pairs() iterator
+        if plr ~= player then
+            table.insert(others, plr)
+        end
+    end
+
+    return others
 end
 
-ArgLib.randother = function(player)
-	local ChosenPlayer = player
-
-	if #game.Players:GetPlayers() > 1 then
-		return {} --return an empty table instead of nil to prevent throwing an error
-	end
-
-	repeat
-		ChosenPlayer = game.Players:GetPlayers()[math.random(1, #game.Players:GetPlayers())]
-	until ChosenPlayer ~= player
-
-	return { ChosenPlayer }
+function ArgLib:all()
+    return Players:GetPlayers()
 end
 
-ArgLib.team = function(player, mod, args)
-	local TeamName = args[2]
+function ArgLib:random()
+    
+    local players = Players:GetPlayers()
 
-	if game.Teams:FindFirstChild(TeamName) then
-		local Team = game.Teams[TeamName]
+    return { players[math.random(1, #players)] }
+    
+end
 
-		local PlayersInTeam = {}
+function ArgLib:randother(player: Player)
+    local chosenPlayer = player
+    local players = Players:GetPlayers()
 
-		for _, Player in pairs(game.Players:GetPlayers()) do
-			if Player.Team == Team then
-				table.insert(PlayersInTeam, Player)
-			end
-		end
+    if #players <= 1 then
+        return { }
+    end
 
-		return PlayersInTeam
-	else
-		UIUtils.Notify(player, "Error", "Not a valid team")
-	end
+    repeat
+        chosenPlayer = players[math.random(1, #players)]
+    until chosenPlayer ~= player
+
+    return { chosenPlayer }
+
+end
+
+function ArgLib:team(player, mod, args)
+    local teamName = args[2]
+
+    if game.Teams:FindFirstChild(teamName) then
+        local team = game.Teams[teamName]
+        local teamPlayers = {}
+
+        for _, plr in Players:GetPlayers() do
+            if plr.Team == team then
+                table.insert(teamPlayers, plr)
+            end
+        end
+
+        return teamPlayers
+
+    else
+        UIUtils.Notify(player, "Error", "Not a valid team")
+    end
+
+    return {}
+
 end
 
 return ArgLib

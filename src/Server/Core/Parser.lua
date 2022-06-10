@@ -5,7 +5,7 @@ local Parser = {}
 local Fastr = script.Parent.Parent
 local CommandsFolder = Fastr:WaitForChild("Core").Commands
 --//dependencies
-local ArgLib = require(Fastr:WaitForChild("Lib"):WaitForChild("ArgLib"))
+local ArgLib = require(Fastr:WaitForChild("Lib"):WaitForChild("ArgLibOOP")).new()
 local MiscUtils = require(Fastr:WaitForChild("Utils").MiscUtils)
 local UIUtils = require(Fastr:WaitForChild("Utils"):WaitForChild("UIUtils"))
 local Settings = require(Fastr:WaitForChild("Settings"))
@@ -20,7 +20,7 @@ local Commands = MiscUtils.CompileCommands(CommandsFolder)
 
 --Rank functions:
 local function GetPermissionLevel(player) --gets a players permission level. it loops through the ranks table and if it finds the players userid or name as the first value it will return the second value. otherwise it will return 0
-	for i, v in pairs(Ranks) do
+	for _, v in pairs(Ranks) do
 		if v[1] == player.UserId or v[1] == player.Name then
 			return v[2]
 		end
@@ -29,7 +29,7 @@ local function GetPermissionLevel(player) --gets a players permission level. it 
 end
 
 local function CheckGroupPerms(player) --converts a players value in the group ranks table to a normal rank
-	for i, v in pairs(GroupRanks) do
+	for _, v in pairs(GroupRanks) do
 		if player:IsInGroup(v[1]) then
 			if player:GetRankInGroup(v[1]) == v[2] and GetPermissionLevel(player) == 0 then
 				table.insert(Ranks, { player.UserId, v[2] })
@@ -55,6 +55,7 @@ end
 local function IsValidAlias(cmd) --checks if the command the player has said is an alias of a command
 	for _, command in pairs(Commands) do
 		if command.Aliases then
+			-- selene: allow(unused_variable)
 			for i, a in ipairs(command.Aliases) do
 				if a == cmd then
 					return string.lower(command.Name)
@@ -67,7 +68,7 @@ end
 
 --control character functions:
 local function PipeCommand(player, args1, args2) --these are both parsed tables
-	local targets = ArgLib.CheckMod(args2[2])
+	--local targets = ArgLib:checkMod(args2[2])
 
 	local cmd2 = args2[1]
 	table.remove(args2, 1)
@@ -88,7 +89,7 @@ local function PipeCommand(player, args1, args2) --these are both parsed tables
 	return args1
 end
 
-local function RepeatCmd(args, cmd, run)
+local function RepeatCmd(args, cmd)
 	if args[#args - 1] == Settings.RepeatChar and tonumber(args[#args]) then
 		return math.clamp(tonumber(args[#args]), 1, cmd["RepeatCeiling"]) or math.clamp(tonumber(args[#args]), 1, 250)
 	end
@@ -148,7 +149,7 @@ local function RunCmd(args, cmd, cmdFunction) --this is for repeat functionality
 		table.remove(args, #args)
 		table.remove(args, #args)
 
-		for i = 0, RptCmd_result, 1 do
+		for _ = 0, RptCmd_result, 1 do
 			cmdFunction()
 		end
 	else
@@ -252,11 +253,11 @@ Parser.ParseCmd = function(player: Player, msg: string, UsingPrefix: boolean)
 				print(args)
 
 				if table.find(Modifyers, args[1]) then
-					if ArgLib[args[1]] and args[1] ~= "player" then --ArgLib.player is special and cannot be accessed from the player just typing player
-						local targets = ArgLib.CheckMod(player, args[1], args)
+					if ArgLib.controlArgs[args[1]] and args[1] ~= "getPlayerTargets" then --ArgLib:getPlayerTargets is special and cannot be accessed from the player just typing player
+						local targets = ArgLib:checkMod(player, args[1], args)
 
 						RunCmd(args, command, function()
-							for i, target in pairs(targets) do
+							for _, target in targets do
 								command.Run(player, target, args, flags)
 							end
 						end)
@@ -264,7 +265,7 @@ Parser.ParseCmd = function(player: Player, msg: string, UsingPrefix: boolean)
 				else --this will fire if the first argument (usually reserved for a mod) is not a valid mod.
 					print("not valid mod")
 
-					local Target = ArgLib.player(player, args[1])
+					local Target = ArgLib:getPlayerTargets(player, args[1])
 
 					if Target then
 						RunCmd(args, command, function()

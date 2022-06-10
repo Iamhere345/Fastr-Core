@@ -18,6 +18,7 @@ local function CreateCommandBarAnims(obj)
 	return OpenCommandBar, CloseCommandBar
 end
 
+-- selene: allow(unused_variable)
 local function UpdateCmdBarAutoFill(text) --wip, will be coming soon(tm)
 	local Cmd
 

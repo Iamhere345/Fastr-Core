@@ -25,7 +25,7 @@ local function SafeGet(key: string, error_msg: string, show_error: boolean, play
 
 		i += 1
 
-	until not r or (i == timeout or i == 20)
+	until (not r and s) or (i == timeout or i == 20)
 
 	if not r and (i == timeout or i == 20) then
 		if show_error then

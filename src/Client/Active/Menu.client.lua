@@ -6,12 +6,12 @@ local PrevPage = nil
 
 local function OpenPage(page, MainMenu)
 	if PrevPage then
-		for i, v in pairs(MainMenu:GetChildren()) do
+		for _, v in MainMenu:GetChildren() do
 			v.Parent = src:FindFirstChild(PrevPage)
 		end
 	end
 
-	for i, v in pairs(src:FindFirstChild(page):GetChildren()) do
+	for _, v in src:FindFirstChild(page):GetChildren() do
 		v.Parent = MainMenu
 	end
 
@@ -20,7 +20,7 @@ end
 
 local function ClosePage(MainMenu)
 	if PrevPage then
-		for i, v in pairs(MainMenu:GetChildren()) do
+		for _, v in MainMenu:GetChildren() do
 			v.Parent = src:FindFirstChild(PrevPage)
 		end
 	end
@@ -34,11 +34,11 @@ OpenMenu.OnClientEvent:Connect(function(page)
 	for i, tab in pairs(Menu.Tabs:GetChildren()) do
 		if tab.ClassName ~= "UIListLayout" then
 			local t1 = tab.MouseEnter:Connect(function()
-				local HoverEffect = TweenService:Create(tab, TweenInfo.new(0.25), { Transparency = 0.5 }):Play()
+				TweenService:Create(tab, TweenInfo.new(0.25), { Transparency = 0.5 }):Play()
 			end)
 
 			local t2 = tab.MouseLeave:Connect(function()
-				local UnHoverEffect = TweenService:Create(tab, TweenInfo.new(0.25), { Transparency = 0 }):Play()
+				TweenService:Create(tab, TweenInfo.new(0.25), { Transparency = 0 }):Play()
 			end)
 
 			local t3 = tab.MouseButton1Click:Connect(function()

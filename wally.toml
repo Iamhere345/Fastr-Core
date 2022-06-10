@@ -2,7 +2,7 @@
 
 name = "iamhere345/fastr"
 description = "Fastr is a bloat ware free, lightweight, highly configurable roblox admin system designed to be easy to use"
-version = "0.6.6"
+version = "1.0.0"
 license = "MIT"
 authors = ["Iamhere345 <https://github.com/Iamhere345>"]
 realm = "shared"

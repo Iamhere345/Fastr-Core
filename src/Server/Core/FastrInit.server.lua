@@ -15,7 +15,7 @@ for _, player in pairs(game.Players:GetPlayers()) do --when fastr is loaded play
 	TextCommandsSetup(player)
 end
 
-local Commands = MiscUtils.CompileCommands(CommandsFolder)
+MiscUtils.CompileCommands(CommandsFolder)
 
 game.Players.PlayerAdded:Connect(function(player) --some players woll join after fastr has loaded and already looped through the existing players
 	TextCommandsSetup(player)

@@ -1,3 +1,4 @@
+--# selene: allow(unused_variable)
 local Core_Commands = {}
 --this script contains all of the core commands for fastr. there is no official support to change these commands. soon there may be a setting to change them tho.
 local Fastr = script.Parent.Parent.Parent
@@ -14,7 +15,6 @@ task.spawn(function()
 	DSLib = require(Fastr.Lib:WaitForChild("DSLib"))
 end)
 
--- selene: allow(unused_variable)
 Core_Commands.cmds = {
 	Name = "cmds",
 	Desc = "brings up the Commands ui",
@@ -211,14 +211,14 @@ Core_Commands.tp = {
 	Run = function(player,target,args,flags) --please remember that target is args[1], which means you cannot do :tp <player> all
 		target.Character.Humanoid:ChangeState(Enum.HumanoidStateType.None)
 
-		local targets = ArgLib.CheckMod(player,args[2],args)
+		local targets = ArgLib:checkMod(player,args[2],args)
 
 		if targets then
 			for _,t in pairs(targets) do
 				target.Character.HumanoidRootPart.CFrame = t.Character.HumanoidRootPart.CFrame + player.Character.HumanoidRootPart.CFrame.LookVector * 2
 			end
-		elseif ArgLib.player(player,args[2]) then
-			target.Character.HumanoidRootPart.CFrame = ArgLib.Player(player,args[2])[1].Character.HumanoidRootPart.CFrame + player.Character.HumanoidRootPart.CFrame.LookVector * 2
+		elseif ArgLib:getPlayerTarget(player,args[2]) then
+			target.Character.HumanoidRootPart.CFrame = ArgLib:getPlayerTarget(player,args[2])[1].Character.HumanoidRootPart.CFrame + player.Character.HumanoidRootPart.CFrame.LookVector * 2
 		end
 	end,
 }
@@ -289,11 +289,17 @@ Core_Commands.ban = {
 			return
 		end
 
-		local days
+		local days: number
 		
-		if table.find(flags,"-P") then days = 99e9 else days = tonumber(args[2]) end
+		if table.find(flags,"-P") then
+			days = 99e9 
+		else 
+			days = tonumber(args[2]) 
+		end
 		
-		for i = 0,1,1 do table.remove(args,1) end
+		for i = 0,1,1 do 
+			table.remove(args,1) 
+		end
 		
 		local note
 		
