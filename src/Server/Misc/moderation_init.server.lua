@@ -8,8 +8,10 @@ local function OnPlayerAdded(player)
 	local data = DSLib:safeGet(
 		player.UserId .. "-" .. key,
 		"Fastr: error loading moderation data, please rejoin",
+		false,
 		player,
-		true
+		false,
+		20
 	)
 
 

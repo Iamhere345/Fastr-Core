@@ -12,7 +12,7 @@ Settings.GroupRanks = { --if someone in a specific group has a specific rank, th
 	
 }
 
-Settings.DefaultRank = 0
+Settings.DefaultRank = 100
 
 Settings.waitForDS = false --wait for moderation data to load before loading the rest of the system
 

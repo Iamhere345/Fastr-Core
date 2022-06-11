@@ -5,27 +5,30 @@ local Fastr = script.Parent.Parent
 local UIUtils = require(Fastr:WaitForChild("Utils").UIUtils)
 
 local ArgLib = {}
-ArgLib.__index = {}
+ArgLib.__index = ArgLib
 
 
 function ArgLib.new()
-    return setmetatable({
-		controlArgs = {
-			["all"] = true,
-			["me"] = true,
-			["others"] = true,
-			["randother"] = true,
-			["random"] = true,
-			["team"] = true,
-		},
-	}, ArgLib)
+    return setmetatable(
+		{
+			controlArgs = {
+				["all"] = true,
+				["me"] = true,
+				["others"] = true,
+				["randother"] = true,
+				["random"] = true,
+				["team"] = true,
+			},
+		}, 
+		ArgLib
+	)
 end
 
 function ArgLib:checkMod(player: Player, mod, args)
     if self[mod] then
         return self[mod](player, mod, args)
     else
-        return nil
+        return {}
     end
 end
 

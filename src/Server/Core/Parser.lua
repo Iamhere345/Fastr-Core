@@ -18,6 +18,8 @@ task.wait(0.25)
 
 local Commands = MiscUtils.CompileCommands(CommandsFolder)
 
+print(ArgLib)
+
 --Rank functions:
 local function GetPermissionLevel(player) --gets a players permission level. it loops through the ranks table and if it finds the players userid or name as the first value it will return the second value. otherwise it will return 0
 	for _, v in pairs(Ranks) do
@@ -97,11 +99,12 @@ local function RepeatCmd(args, cmd)
 	return nil
 end
 
-local function GetFlags(args: table)
+local function GetFlags(args: {string})
 	local flags = {}
 
-	for i, arg in pairs(args) do
-		if arg:gmatch("%-%a") then
+	for i, arg in args do
+		if string.sub(arg, 0, 1) == "-" then
+			print("match: "..arg)
 			table.insert(flags, arg)
 			table.remove(args, i)
 		end
@@ -252,9 +255,13 @@ Parser.ParseCmd = function(player: Player, msg: string, UsingPrefix: boolean)
 			if Modifyers then
 				print(args)
 
+				print(string.format("modifyers: %s, arg: %s, result: %s", table.concat(Modifyers, " "), tostring(args[1]), tostring(table.find(Modifyers, args[1]))))
+
 				if table.find(Modifyers, args[1]) then
-					if ArgLib.controlArgs[args[1]] and args[1] ~= "getPlayerTargets" then --ArgLib:getPlayerTargets is special and cannot be accessed from the player just typing player
+					if ArgLib.controlArgs[string.lower(args[1])] and tostring(args[1]) ~= "getplayertarget" then --ArgLib:getPlayerTarget is special and cannot be accessed from the player just typing player
 						local targets = ArgLib:checkMod(player, args[1], args)
+
+						print("got target(s)")
 
 						RunCmd(args, command, function()
 							for _, target in targets do
@@ -265,7 +272,7 @@ Parser.ParseCmd = function(player: Player, msg: string, UsingPrefix: boolean)
 				else --this will fire if the first argument (usually reserved for a mod) is not a valid mod.
 					print("not valid mod")
 
-					local Target = ArgLib:getPlayerTargets(player, args[1])
+					local Target = ArgLib:getPlayerTarget(player, args[1])
 
 					if Target then
 						RunCmd(args, command, function()
