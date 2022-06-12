@@ -178,12 +178,8 @@ Parser.ParseCmd = function(player: Player, msg: string, UsingPrefix: boolean)
 	string.lower(CommandStr)
 	table.remove(args, 1) --remove the command from the args table (because the command isn't an argument)
 
-	print(args)
-
 	args, flags = GetFlags(args) --seperate the flags from the args
 	args = getQuotedArgs(args) --There can only be one quoted arg currently
-
-	print(args)
 
 	if IsValidCommand(CommandStr) or IsValidAlias(CommandStr) then --check if the command is valid
 		if IsValidAlias(CommandStr) then
@@ -253,9 +249,6 @@ Parser.ParseCmd = function(player: Player, msg: string, UsingPrefix: boolean)
 			end
 
 			if Modifyers then
-				print(args)
-
-				print(string.format("modifyers: %s, arg: %s, result: %s", table.concat(Modifyers, " "), tostring(args[1]), tostring(table.find(Modifyers, args[1]))))
 
 				if table.find(Modifyers, args[1]) then
 					if ArgLib.controlArgs[string.lower(args[1])] and tostring(args[1]) ~= "getplayertarget" then --ArgLib:getPlayerTarget is special and cannot be accessed from the player just typing player

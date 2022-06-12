@@ -17,8 +17,9 @@ local speed: number = 30
 local ForwardToggle = false
 local flying = false
 --//connections
-local IE: RBXScriptConnection
-local IB: RBXScriptConnection
+local RS: RBXScriptConnection?
+local IE: RBXScriptConnection?
+local IB: RBXScriptConnection?
 local TF: RBXScriptConnection
 local NE: RBXScriptConnection
 local camCF: RBXScriptConnection
@@ -47,10 +48,11 @@ local function fly(noclip_enabled)
 
 	camCF =  camera:GetPropertyChangedSignal("CFrame"):Connect(function()
 		BodyGyro.CFrame = camera.CFrame
-		print(controls:GetMoveVector())
+		--print(controls:GetMoveVector())
 	end)
 
-	rs.RenderStepped:Connect(function()
+	RS = nil
+	RS = rs.RenderStepped:Connect(function()
 		local input: Vector3 = controls:GetMoveVector()
 
 		BodyVel.Velocity = ((camera.CFrame * CFrame.new(input.X, velY, input.Z)).Position - camera.CFrame.Position) * speed
@@ -65,6 +67,7 @@ local function fly(noclip_enabled)
 
 	end)
 
+	IB = nil
 	IB  = uis.InputBegan:Connect(function(input, internallyProcessed)
 		
 		if internallyProcessed then return end
@@ -85,6 +88,7 @@ local function fly(noclip_enabled)
 
 	end)
 
+	IE = nil
 	IE = uis.InputEnded:Connect(function(input, internallyProcessed)
 		
 		if internallyProcessed then return end
@@ -95,13 +99,13 @@ local function fly(noclip_enabled)
 
 	end)
 
-
-
 end
 
 local function StopFlying()
 	char.Humanoid.PlatformStand = false
 	camCF:Disconnect()
+	RS:Disconnect()
+	IB:Disconnect()
 	IE:Disconnect()
 	BodyGyro:Destroy()
 	BodyVel:Destroy()
@@ -123,7 +127,9 @@ game.ReplicatedStorage:WaitForChild("Fastr_Remotes").Fly.OnClientEvent:Connect(f
 
 		fly(noclip_enabled)
 
-		IB = uis.InputBegan:Connect(function(input, otherInput)
+		local IB_flightToggle: RBXScriptConnection
+
+		IB_flightToggle = uis.InputBegan:Connect(function(input, otherInput)
 			if input.KeyCode == Enum.KeyCode.E and not otherInput then
 				if flying == true then
 					StopFlying()
@@ -144,7 +150,7 @@ game.ReplicatedStorage:WaitForChild("Fastr_Remotes").Fly.OnClientEvent:Connect(f
 		end)
 
 		script.Parent:WaitForChild("FlightControl").StopFlight.MouseButton1Click:Connect(function()
-			IB:Disconnect()
+			IB_flightToggle:Disconnect()
 			TF:Disconnect()
 			StopFlying()
 			script.Parent.FlightControl:Destroy()
