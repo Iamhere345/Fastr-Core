@@ -112,7 +112,7 @@ Core_Commands.whisper = {
 
 Core_Commands.splitteam = {
 	Name = "splitteam",
-	Desc = "splits one team into two. this will be updated in a future version to be more versatile",
+	Desc = "splits one team into two",
 	Usage = ":twoteams <team to split> <team1> <team2>",
 	PermissionLevel = 1,
 	Aliases = {"twoteams"},
