@@ -21,7 +21,7 @@ local RS: RBXScriptConnection?
 local IE: RBXScriptConnection?
 local IB: RBXScriptConnection?
 local TF: RBXScriptConnection
-local NE: RBXScriptConnection
+local NE: RBXScriptConnection?
 local camCF: RBXScriptConnection
 
 
@@ -57,15 +57,19 @@ local function fly(noclip_enabled)
 
 		BodyVel.Velocity = ((camera.CFrame * CFrame.new(input.X, velY, input.Z)).Position - camera.CFrame.Position) * speed
 
-		if noclip_enabled then
+
+	end)
+
+	NE = nil
+	if noclip_enabled then
+		NE = rs.Stepped:Connect(function(time, deltaTime)
 			for _,v in pairs(char:GetDescendants()) do
 				if v:IsA("BasePart") then
 					v.CanCollide = false
 				end
 			end
-		end
-
-	end)
+		end)
+	end
 
 	IB = nil
 	IB  = uis.InputBegan:Connect(function(input, internallyProcessed)
