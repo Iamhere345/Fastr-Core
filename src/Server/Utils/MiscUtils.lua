@@ -5,13 +5,28 @@ MiscUtils.CompileCommands = function(Root)
 	local compiledTable = {}
 
 	if script:FindFirstChild("CoreCommandsEdits") then
-		MakeEdits = require(script.CoreCommandsEdits)
+		s,r = pcall(function()
+			MakeEdits = require(script.CoreCommandsEdits)
+		end)
+		
+		if r then warn("Fastr: CoreCommandsEdits was unable to load due to error: "..r) end
+
 	end
 
 	for _, v in pairs(Root:GetChildren()) do
 		if v:IsA("ModuleScript") then
-			local CommandTable = require(v)
 
+			local CommandTable
+
+			s,r = pcall(function()
+				CommandTable = require(v)
+			end)
+
+			if r then
+				warn("Fastr: Unable to mount command module '"..v.Name.."' due to error: "..r)
+				continue
+			end
+			
 			for _, command in pairs(CommandTable) do
 				compiledTable[string.lower(command.Name)] = command --this is how you can have a command with an uppercase name have fastr still work with that command
 			end
