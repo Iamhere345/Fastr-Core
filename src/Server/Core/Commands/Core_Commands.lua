@@ -1,6 +1,6 @@
 --# selene: allow(unused_variable)
 local Core_Commands = {}
---this script contains all of the core commands for fastr. there is no official support to change these commands. soon there may be a setting to change them tho.
+--this script contains all of the core commands for Fastr. They can be disabled from the loader by changing coreCommandsEdits or in the script by setting them to nil just before the return statement.
 local Fastr = script.Parent.Parent.Parent
 
 local ArgLib = require(Fastr:WaitForChild("Lib"):WaitForChild("ArgLib"))
@@ -112,7 +112,7 @@ Core_Commands.whisper = {
 
 Core_Commands.splitteam = {
 	Name = "splitteam",
-	Desc = "splits one team into two. this will be updated in a future version to be more versatile",
+	Desc = "splits one team into two",
 	Usage = ":twoteams <team to split> <team1> <team2>",
 	PermissionLevel = 1,
 	Aliases = {"twoteams"},
