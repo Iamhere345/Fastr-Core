@@ -4,7 +4,7 @@ Fastr is a bloat ware free, lightweight, highly configurable roblox admin system
 
 ## Links
  - [Docs](https://iamhere345.github.io/Fastr)
- - [Trello](https://iamhere345.github.io/Fastr)
+ - [Trello](https://trello.com/b/tsQIMnkb/fastr)
 
 ## Installation
  
