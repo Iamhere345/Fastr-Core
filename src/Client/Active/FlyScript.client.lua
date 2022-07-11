@@ -164,6 +164,7 @@ game.ReplicatedStorage:WaitForChild("Fastr_Remotes").Fly.OnClientEvent:Connect(f
 			StopFlying()
 			script.Parent.FlightControl:Destroy()
 			flying = false
+			speed = 30
 		end)
 	end
 end)
