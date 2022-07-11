@@ -2,7 +2,7 @@
 	<Meta name="ExplicitAutoJoints">true</Meta>
 	<External>null</External>
 	<External>nil</External>
-	<Item class="ScrollingFrame" referent="RBXef174a9a01e54348915e3ee85f7e907a">
+	<Item class="ScrollingFrame" referent="RBX7421B19F0E6A4C238D450DC9D75E233E">
 		<Properties>
 			<bool name="Active">false</bool>
 			<Vector2 name="AnchorPoint">
@@ -11,7 +11,7 @@
 			</Vector2>
 			<BinaryString name="AttributesSerialize"></BinaryString>
 			<bool name="AutoLocalize">true</bool>
-			<token name="AutomaticCanvasSize">0</token>
+			<token name="AutomaticCanvasSize">2</token>
 			<token name="AutomaticSize">0</token>
 			<Color3 name="BackgroundColor3">
 				<R>1</R>
@@ -66,7 +66,13 @@
 			<token name="ScrollingDirection">4</token>
 			<bool name="ScrollingEnabled">true</bool>
 			<bool name="Selectable">false</bool>
+			<token name="SelectionBehaviorDown">0</token>
+			<token name="SelectionBehaviorLeft">0</token>
+			<token name="SelectionBehaviorRight">0</token>
+			<token name="SelectionBehaviorUp">0</token>
+			<bool name="SelectionGroup">true</bool>
 			<Ref name="SelectionImageObject">null</Ref>
+			<int name="SelectionOrder">0</int>
 			<UDim2 name="Size">
 				<XS>1</XS>
 				<XO>0</XO>
@@ -82,20 +88,20 @@
 			<bool name="Visible">true</bool>
 			<int name="ZIndex">1</int>
 		</Properties>
-		<Item class="LocalScript" referent="RBXbf158cbe4d75469689b694923085c1de">
+		<Item class="LocalScript" referent="RBX1F7914162F65411F8AE1CA4C357EEF19">
 			<Properties>
 				<BinaryString name="AttributesSerialize"></BinaryString>
 				<bool name="Disabled">false</bool>
 				<Content name="LinkedSource"><null></null></Content>
 				<string name="Name">GetCommands</string>
-				<string name="ScriptGuid">{1c20df3b-3c01-4429-9ab8-f5b7bd03c5c8}</string>
+				<string name="ScriptGuid">{FE328366-19FB-4046-8C0E-03FB4FC256F7}</string>
 				<ProtectedString name="Source"><![CDATA[local Commands = game.ReplicatedStorage:WaitForChild("Fastr_Remotes").GetCmdData:InvokeServer()
 
 print(Commands)
 
 for i,command in pairs(Commands) do
 	
-	script.Parent.CanvasSize += UDim2.new(0,0,0.1,0)
+	--script.Parent.CanvasSize += UDim2.new(0,0,0.05,0)
 
 	local cmd = script.Parent.Parent.Parent.Parent.CommandInfo:Clone()
 	cmd.Parent = script.Parent
@@ -144,7 +150,7 @@ end]]></ProtectedString>
 				<BinaryString name="Tags"></BinaryString>
 			</Properties>
 		</Item>
-		<Item class="UIListLayout" referent="RBXaf778667a3e1485cb8529404ead4a14d">
+		<Item class="UIListLayout" referent="RBXADFFB00D19CE4A65BD58A39B4EE45416">
 			<Properties>
 				<BinaryString name="AttributesSerialize"></BinaryString>
 				<token name="FillDirection">1</token>
