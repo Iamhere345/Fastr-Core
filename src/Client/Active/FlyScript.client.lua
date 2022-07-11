@@ -57,7 +57,6 @@ local function fly(noclip_enabled)
 
 		BodyVel.Velocity = ((camera.CFrame * CFrame.new(input.X, velY, input.Z)).Position - camera.CFrame.Position) * speed
 
-
 	end)
 
 	NE = nil
@@ -100,7 +99,9 @@ local function fly(noclip_enabled)
 		if input.KeyCode == Enum.KeyCode.R or input.KeyCode == Enum.KeyCode.F then
 			velY = 0
 		end
-
+		
+		BodyVel.Velocity = Vector3.new(0,0,0)
+		
 	end)
 
 end
@@ -123,6 +124,8 @@ game.ReplicatedStorage:WaitForChild("Fastr_Remotes").Fly.OnClientEvent:Connect(f
 	if not flying then
 		local FC = script.Parent.Parent.Resources.FlightControl:Clone() --flight control gui
 		FC.Parent = script.Parent
+		
+		local speedInput: TextBox = FC.Speed
 
 		local FCT = tween:Create(FC, TweenInfo.new(0.5), { Position = UDim2.new(0.85, 0, 0.8, 0) }) --flight control gui tween
 		FCT:Play()
@@ -132,6 +135,17 @@ game.ReplicatedStorage:WaitForChild("Fastr_Remotes").Fly.OnClientEvent:Connect(f
 		fly(noclip_enabled)
 
 		local IB_flightToggle: RBXScriptConnection
+		local FL_speedChange: RBXScriptConnection
+		
+		FL_speedChange = speedInput.FocusLost:Connect(function(enterPressed)
+			if enterPressed then
+				local text = speedInput.Text
+				
+				if tonumber(text) then
+					speed = text
+				end
+			end
+		end)
 
 		IB_flightToggle = uis.InputBegan:Connect(function(input, otherInput)
 			if input.KeyCode == Enum.KeyCode.E and not otherInput then
@@ -144,18 +158,9 @@ game.ReplicatedStorage:WaitForChild("Fastr_Remotes").Fly.OnClientEvent:Connect(f
 			end
 		end)
 
-		TF = script.Parent.FlightControl.ToggleGoForward.MouseButton1Click:Connect(function()
-			if ForwardToggle == false then
-				ForwardToggle = true
-			else
-				ForwardToggle = false
-				BodyVel.Velocity = Vector3.new(0, 0, 0)
-			end
-		end)
-
 		script.Parent:WaitForChild("FlightControl").StopFlight.MouseButton1Click:Connect(function()
 			IB_flightToggle:Disconnect()
-			TF:Disconnect()
+			FL_speedChange:Disconnect()
 			StopFlying()
 			script.Parent.FlightControl:Destroy()
 			flying = false
