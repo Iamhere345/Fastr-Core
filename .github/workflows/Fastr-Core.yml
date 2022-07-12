@@ -21,7 +21,8 @@ jobs:
         run: |
           git config --global user.email "github-action@users.noreply.github.com"
           git config --global user.name "Deploy to Fastr-Core"
-
+          git remote add target "https://github.com/Iamhere345/Fastr-Core"
+          
       - name: Delete Files
         run: |
           cd src/Server/
@@ -47,5 +48,5 @@ jobs:
       - name: push to Fastr-Core
         run: |
           git commit -am "Deploy to Fastr-Core"
-          git push "https://${{ secrets.GITHUB_ACCESS_TOKEN }}@github.com/Fastr-Core.git" main
+          git push target main
           echo "Done."
