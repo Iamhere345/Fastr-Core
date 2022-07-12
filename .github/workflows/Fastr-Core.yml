@@ -22,7 +22,7 @@ jobs:
           git config --global user.email "github-action@users.noreply.github.com"
           git config --global user.name "Deploy to Fastr-Core"
           git remote add target "https://github.com/Iamhere345/Fastr-Core"
-          
+
       - name: Delete Files
         run: |
           cd src/Server/
@@ -46,7 +46,13 @@ jobs:
           rm ShowMessage.model.json
 
       - name: push to Fastr-Core
-        run: |
-          git commit -am "Deploy to Fastr-Core"
-          git push target main
-          echo "Done."
+        uses: cpina/github-action-push-to-another-repository@main
+        env: 
+          SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
+        with:
+          source-directory: .
+          destination-github-username: "Iamhere345"
+          destination-repository-name: "Fastr-Core"
+          user-email: "github-action@users.noreply.github.com"
+          user-name: "Deploy to Fastr-Core"
+          target-branch: main
