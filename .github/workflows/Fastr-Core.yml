@@ -1,0 +1,51 @@
+name: Deploy to Fastr-Core
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  Deploy-to-Fastr-Core:
+    
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-deptch: 0
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "github-action@users.noreply.github.com"
+          git config --global user.name "Deploy to Fastr-Core"
+
+      - name: Delete Files
+        run: |
+          cd src/Server/
+          rm -rf Resources 
+          rm Core/Commands/*
+
+          cd ../Client
+          rm Active/FlyScript.client.lua
+
+          cd Resources
+          rm FlightControl.rbxmx
+          rm Message.rbxmx
+          rm Notification.rbxmx
+          rm SmallMessage.rbxmx
+
+          cd ../../Remotes
+          rm Fly.model.json
+          rm ShowCountdown.model.json # the countdown command isn't nessesary in normal Fastr
+          rm ShowNotification.model.json
+          rm ShowSmallMessage.model.json
+          rm ShowMessage.model.json
+
+      - name: push to Fastr-Core
+        run: |
+          git commit -am "Deploy to Fastr-Core"
+          git push "https://github.com/Iamhere345/Fastr-Core.git" --all main
+          echo "Done."
