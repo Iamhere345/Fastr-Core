@@ -54,7 +54,7 @@ jobs:
         with:
           source-directory: .
           destination-github-username: "Iamhere345"
-          destination-repository-name: "Fastr-Core"
+          destination-repository-name: "Fastr-Core2"
           user-email: "github-action@users.noreply.github.com"
           user-name: "Deploy to Fastr-Core"
           target-branch: main
