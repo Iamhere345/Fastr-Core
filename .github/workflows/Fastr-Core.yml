@@ -47,5 +47,5 @@ jobs:
       - name: push to Fastr-Core
         run: |
           git commit -am "Deploy to Fastr-Core"
-          git push "https://github.com/Iamhere345/Fastr-Core.git" --all main
+          git push "https://github.com/Iamhere345/Fastr-Core.git" main
           echo "Done."
