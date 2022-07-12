@@ -1,4 +1,4 @@
-name: Deploy to Fastr-Core
+name: Fastr-Core
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  Deploy-to-Fastr-Core:
+  Deploy to Fastr-Core:
     
     runs-on: ubuntu-latest
 
@@ -47,5 +47,5 @@ jobs:
       - name: push to Fastr-Core
         run: |
           git commit -am "Deploy to Fastr-Core"
-          git push "https://github.com/Iamhere345/Fastr-Core.git" main
+          git push "https://${{ secrets.GITHUB_ACCESS_TOKEN }}@github.com/Fastr-Core.git" main
           echo "Done."
