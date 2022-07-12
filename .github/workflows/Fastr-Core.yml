@@ -44,7 +44,9 @@ jobs:
           rm ShowNotification.model.json
           rm ShowSmallMessage.model.json
           rm ShowMessage.model.json
-
+      - name: commit changes
+        run: git commit -am "Deploy to Fastr-Core"
+        
       - name: push to Fastr-Core
         uses: cpina/github-action-push-to-another-repository@main
         env: 
