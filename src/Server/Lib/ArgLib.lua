@@ -121,11 +121,11 @@ function ArgLib:getPlayerTarget(player: Player, target: string): Player
 
 end
 
-function ArgLib:me(player: Player)
+function ArgLib.me(player: Player)
     return { player }
 end
 
-function ArgLib:others(player: Player)
+function ArgLib.others(player: Player)
     local others = {}
 
     for _, plr in Players:GetPlayers() do -- this for loop may be inconsistent with other for loops because it doesn't use the pairs() iterator
@@ -137,11 +137,11 @@ function ArgLib:others(player: Player)
     return others
 end
 
-function ArgLib:all()
+function ArgLib.all()
     return Players:GetPlayers()
 end
 
-function ArgLib:random()
+function ArgLib.random()
     
     local players = Players:GetPlayers()
 
@@ -149,7 +149,7 @@ function ArgLib:random()
     
 end
 
-function ArgLib:randother(player: Player)
+function ArgLib.randother(player: Player)
     local chosenPlayer = player
     local players = Players:GetPlayers()
 
@@ -165,7 +165,7 @@ function ArgLib:randother(player: Player)
 
 end
 
-function ArgLib:team(player, mod, args)
+function ArgLib.team(player, mod, args)
     local teamName = args[2]
 
     if game.Teams:FindFirstChild(teamName) then
