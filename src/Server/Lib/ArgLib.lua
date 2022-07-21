@@ -7,7 +7,6 @@ local UIUtils = require(Fastr:WaitForChild("Utils").UIUtils)
 local ArgLib = {}
 ArgLib.__index = ArgLib
 
-
 function ArgLib.new()
     return setmetatable(
 		{
@@ -30,6 +29,64 @@ function ArgLib:checkMod(player: Player, mod, args)
     else
         return {}
     end
+end
+
+function ArgLib:autocomplete(player, t: {}, target: string)
+	
+	local function getIndex(name: string)
+
+		local index = t[string.lower(name)]
+
+		if index then
+			return index
+		end
+	end
+
+	if not target then
+		return nil
+	end
+
+	target = target:lower()
+
+	if getIndex(target) then
+		return getIndex(target)
+	end
+
+	local candidates
+
+	for k, v in t do
+		if string.match(k:lower(), target) then
+			--found match
+			local start = string.find(k:lower(), target)
+
+			if start == 1 then
+				table.insert(candidates, k:lower())
+			end
+		end
+	end
+
+	local bestMatch = "no-one"
+
+	for i,v in candidates do
+		
+		if i == 1 then
+			bestMatch = v
+		else
+			local _, currentEnd = string.find(v, target)
+			local _, bestMatch_end = string.find(bestMatch, target)
+
+			if currentEnd > bestMatch_end then
+				bestMatch = v
+			elseif currentEnd == bestMatch_end then
+				UIUtils.Notify(player, "Error", "two items with same start of name, please be more specific")
+				return nil
+			end
+		end
+
+	end
+
+	return getIndex(bestMatch)
+
 end
 
 function ArgLib:getPlayerTarget(player: Player, target: string): Player
@@ -71,11 +128,11 @@ function ArgLib:getPlayerTarget(player: Player, target: string): Player
 	local PossiblePlayers = {}
 
 	for _, v in pairs(Players:GetPlayers()) do --loops through players
-		if string.find(string.lower(v.Name), target) or string.find(string.lower(v.DisplayName), target) then --if the the given shortened player name if found in the players username or display name
+		if string.match(string.lower(v.Name), target) or string.match(string.lower(v.DisplayName), target) then --if the the given shortened player name if found in the players username or display name
 			print("found match")
 
-			local usernameStart, usernameEnd = string.find(string.lower(v.Name), target)
-			local displayStart, DisplayEnd = string.find(string.lower(v.DisplayName), target)
+			local usernameStart = string.find(string.lower(v.Name), target)
+			local displayStart = string.find(string.lower(v.DisplayName), target)
 
 			if usernameStart == 1 then --if the string found starts at the start of the string having ":cmd here" when the username is Iamhere is unexpected behavior
 				table.insert(PossiblePlayers, string.lower(v.Name))
@@ -97,8 +154,8 @@ function ArgLib:getPlayerTarget(player: Player, target: string): Player
 		if i == 1 then --at the start of the loop, there is no best match, therefor by default the first candidate is the first best match
 			BestMatch = v
 		else
-			local usernameStart, usernameEnd = string.find(v, target)
-			local bestMatch_start, bestMatch_end = string.find(BestMatch, target)
+			local _, usernameEnd = string.find(v, target)
+			local _, bestMatch_end = string.find(BestMatch, target)
 
 			if usernameEnd > bestMatch_end then
 				BestMatch = v
@@ -110,7 +167,7 @@ function ArgLib:getPlayerTarget(player: Player, target: string): Player
 	end
 
 	for _, v in Players:GetPlayers() do --this block converts the players displayName into the players Username for execution
-		if string.lower(v.DisplayName) == BestMatch then
+		if string.lower(v.DisplayName) == BestMatch then --TODO remove edge case here where display name would take prevelance over username
 			BestMatch = string.lower(v.Name)
 		end
 	end

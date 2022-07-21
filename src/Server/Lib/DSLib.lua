@@ -7,7 +7,8 @@ local UIUtils = require(Fastr:WaitForChild("Utils").UIUtils)
 
 local HARD_TIMEOUT = 20 -- timeout constant incase someone sets a timeout to something really high
 
---[[ for any of the stuff here to work in studio please turn studio access to api on.
+--[[ 
+for any of the stuff here to work in studio please turn studio access to api on.
 currently this module is only used for the ban command, but you can put all of your command's datastore stuff here as well
 ]]
 
@@ -75,7 +76,7 @@ function DSLib:safeSet(key: string, data: any, errorMsg: string, showError: stri
 
     if r and i == (timeout or HARD_TIMEOUT) then
         warn(r)
-
+        
         if showError then
             UIUtils.Notify(player)
         else
