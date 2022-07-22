@@ -1,3 +1,12 @@
+--[[
+
+FlyScript:
+	Author: github.com/Iamhere345
+	License: MIT
+	Description: Allows the player to 'fly' when the fly remote event is sent to the client using a BodyGyro and BodyVelocity.
+
+]]
+
 --//services
 local uis = game:GetService("UserInputService")
 local rs = game:GetService("RunService")

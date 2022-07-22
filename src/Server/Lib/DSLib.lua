@@ -1,3 +1,12 @@
+--[[
+
+DSLib:
+    Author: github.com/Iamhere345
+    License: MIT
+    Description: Provides a wrapper to interact with Fastr's datastore safely
+
+]]
+
 local DSS = game:GetService("DataStoreService")
 local DS = DSS:GetDataStore("FastrDS")
 

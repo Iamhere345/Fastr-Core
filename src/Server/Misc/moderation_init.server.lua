@@ -1,3 +1,12 @@
+--[[
+
+moderation_init:
+	Author: github.com/Iamhere345
+	License: MIT
+	Description: initialises the moderation system. This kicks players if they are banned.
+
+]]
+
 local Fastr = script.Parent.Parent
 
 local DSLib = require(Fastr:WaitForChild("Lib").DSLib).new()

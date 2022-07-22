@@ -1,3 +1,14 @@
+--[[
+
+ArgLib:
+	Author: github.com/Iamhere345
+	License: MIT
+	Description: the functions specified in the controlsArgs table are called when a player uses a control arg. Functions that are not specified
+	have special uses to do with arguments, such as getPlayerTarget() for player autocomplete and autocomplete() for autocomplete for everything 
+	else.
+
+]]
+
 --# selene: allow(unused_variable)
 local Players = game:GetService("Players")
 

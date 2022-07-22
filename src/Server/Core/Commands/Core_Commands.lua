@@ -1,3 +1,13 @@
+--[[
+
+Core_Commands:
+	Author github.com/Iamhere345
+	License: MIT
+	Description: The default commands that Fastr comes with that can be executed by players with high enough privleges.
+	These commands are purely utilites, as we try to make sure that Fastr doesn't have any 'bloat' commands.
+
+]]
+
 --# selene: allow(unused_variable)
 local Core_Commands = {}
 --this script contains all of the core commands for Fastr. They can be disabled from the loader by changing coreCommandsEdits or in the script by setting them to nil just before the return statement.

@@ -1,3 +1,14 @@
+--[[
+
+CommandBar_Handler:
+	Author: github.com/Iamhere345
+	License: MIT,
+	Description: handles effects and inputs for the command bar. If the '\' key is press it will tween the command bar onto the screen,
+	and if a message is entered it will send that to the parser via a remote event, where it will be validated. One future feature for the
+	command bar is autocomplete, but that has not been fully implemented yet (you can see the progress in the UpdateCmdBarAutoFill() function).
+
+]]
+
 local uis = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 

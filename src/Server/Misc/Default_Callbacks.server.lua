@@ -1,3 +1,13 @@
+--[[
+
+Default_Callbacks:
+	Author: github.com/Iamhere345
+	License: MIT
+	Description: handles miscellaneous remote events sent to the server. These include prompting the purchase of donations and versions of Fastr,
+	as well as sending metadata about commands to the client.
+
+]]
+
 local Fastr = script.Parent.Parent
 local remotes = game.ReplicatedStorage:WaitForChild("Fastr_Remotes")
 local mps = game:GetService("MarketplaceService")

@@ -1,3 +1,13 @@
+--[[
+
+UI_Handler:
+	Author: github.com/Iamhere345
+	License: MIT
+	Description: receives remote events from the server and show the corresponding ui when they are fired. This script handles messages,
+	countdown, and most notably notifications - which can be customised by the remote event extensibly.
+
+]]
+
 local TweenService = game:GetService("TweenService")
 local remotes = game.ReplicatedStorage:WaitForChild("Fastr_Remotes")
 local resources = script.Parent.Parent.Resources

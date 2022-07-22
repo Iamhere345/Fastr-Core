@@ -1,3 +1,12 @@
+--[[
+
+MiscUtils:
+	Author: github.com/Iamhere345
+	License: MIT,
+	Description: contains miscellaneous helper functions used throughout Fastr_Server.
+
+]]
+
 local MiscUtils = {}
 
 MiscUtils.CompileCommands = function(Root)

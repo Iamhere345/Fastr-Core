@@ -1,3 +1,24 @@
+--[[
+
+ModLib:
+    Author: github.com/Iamhere345
+    License: MIT
+    Description: Allows for the banning of players by using DSLib to add moderation data to a players DS key.
+    A players moderation 'profile' is as follows:
+    {
+        Bans: {
+            [1] (the first index is always the most recent ban): { 
+                ban_time: {the unix time when the ban will be finished, the amount of days specified},
+                moderator: string (name of the moderator),
+                mod_note: string (a message for the player left by the moderator),
+                ban_repealed: bool (default is false. If set to true the ban will be inactive even if the duration of the ban has passed)
+            }
+        }
+    }
+
+
+]]
+
 local Fastr = script.Parent.Parent
 
 local DSLib = require(Fastr.Lib.DSLib).new()

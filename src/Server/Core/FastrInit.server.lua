@@ -1,4 +1,12 @@
---this script sets fastr up so it can run
+--[[
+
+Init:
+	Author: github.com/Iamhere345
+	License: MIT
+	Description: Initialises Fastr's server-side components.
+
+]]
+
 local Fastr = script.Parent.Parent
 local Parser = require(script.Parent.Parser)
 local MiscUtils = require(Fastr.Utils.MiscUtils)

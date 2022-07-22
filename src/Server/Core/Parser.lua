@@ -1,3 +1,14 @@
+--[[
+
+Parser:
+	Author: github.com/Iamhere345
+	License: MIT
+	Description: Parses commands set to Fastr and compiles configuration data from settings.
+	Command or alias validity check -> player rank check -> control character check and control char execution -> modifier or control arg check ->
+	control arg execution | normal execution
+
+]]
+
 local Parser = {}
 --this script parses commands and also compiles stuff from settings
 

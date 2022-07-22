@@ -1,3 +1,12 @@
+--[[
+
+Menu:
+	Author: github.com/Iamhere345
+	License: MIT
+	Description: Handles menu widgets. When a menu widget is pressed it will open it's corresponding page.
+
+]]
+
 local TweenService = game:GetService("TweenService")
 local OpenMenu = game.ReplicatedStorage:WaitForChild("Fastr_Remotes"):WaitForChild("OpenMenu")
 local src = script.Parent.Parent.Resources.MenuResources
