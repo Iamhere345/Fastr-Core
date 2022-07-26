@@ -13,7 +13,8 @@ download either of these models and add them to your roblox game. (note: the loa
 click on [this link](https://github.com/Iamhere345/Fastr/releases) to open the releases page of Fastr and download the version of Fastr you would like.
 
 ### Method 3: Rojo
-WIP
-- [Install with rojo (wip)]()
+ - download the github repository (for cli users `git clone https://github.com/Iamhere345/Fastr.git`)
+ - Open your roblox place
+ - `rojo serve` the repo and use the rojo plugin to sync it into your roblox place.
 
 

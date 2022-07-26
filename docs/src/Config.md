@@ -37,7 +37,16 @@ Example:
 
 ### Key
 
-This is just the key that fastr uses for datastores. You can change it to whatever you want but be warned; if you ever want to change the key all previous data (including moderation data, i.e bans) will be wiped.
+This is just the key that fastr uses for datastores. You can change it to whatever you want but be warned; if you ever want to change the key all
+previous data (including moderation data, i.e bans) will be wiped.
+
+### WaitForDS
+
+If this is set to true, Fastr will wait for moderation data to load before the rest of the admin system loads. Having This set to false will incur faster load times.
+
+## Control Characters
+
+Controls characters are characters that have a special meaning in commands
 
 ### Prefix
 
@@ -45,4 +54,21 @@ This is what you type before your command to let fastr know that you are typing 
 
 Example: `:tp all me`
 
-### This page is a work in progress; not all information on this topic has been written yet.
+### And
+
+Used to chain multiple commands together. The default and char is '+'. 
+
+Example: `:bring all + m hello`
+
+### Repeat
+
+Used to repeat a given command a multiple times. The default repeat char is '*'.
+
+Example: `:bring randother * 5`
+
+### Pipe
+
+Used to "pipe" the output of one command into the input of another. The default pipe char is '|'.
+
+Example: `:team others | createteam red`
+
