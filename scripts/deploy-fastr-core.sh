@@ -18,4 +18,4 @@ cd ../../Remotes
 git commit -am "deploy"
 git push -f fastr-core
 
-git pull -f origin
+git pull -f
