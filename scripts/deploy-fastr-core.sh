@@ -1,6 +1,7 @@
 git branch deploy
 git checkout deploy
 
+rm -rf .github
 cd src/Server/
     rm -rf Resources 
     rm Core/Commands/*
