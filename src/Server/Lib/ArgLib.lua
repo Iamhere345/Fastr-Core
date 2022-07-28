@@ -68,10 +68,10 @@ function ArgLib:autocomplete(player, t: {}, target: string)
 	for k, v in t do
 		if string.match(k:lower(), target) then
 			--found match
-			local start = string.find(k:lower(), target)
+			local start = string.find(v:lower(), target)
 
 			if start == 1 then
-				table.insert(candidates, k:lower())
+				table.insert(candidates, v:lower())
 			end
 		end
 	end
