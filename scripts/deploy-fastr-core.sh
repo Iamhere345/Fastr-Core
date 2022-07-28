@@ -21,4 +21,5 @@ cd ../../Remotes
 git commit -am "deploy"
 git push -f fastr-core
 
+git checkout main
 git branch -d deploy
