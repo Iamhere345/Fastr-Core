@@ -25,6 +25,8 @@ jobs:
 
       - name: Delete Files
         run: |
+          rm -rf .github
+          
           cd src/Server/
           rm -rf Resources 
           rm Core/Commands/*
