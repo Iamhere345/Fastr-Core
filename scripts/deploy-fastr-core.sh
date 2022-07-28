@@ -1,5 +1,3 @@
-git branch deploy
-
 cd src/Server/
     rm -rf Resources 
     rm Core/Commands/*
@@ -20,5 +18,4 @@ cd ../../Remotes
 git commit -am "deploy"
 git push -f fastr-core
 
-git checkout main
-git branch -D deploy
+git pull origin
