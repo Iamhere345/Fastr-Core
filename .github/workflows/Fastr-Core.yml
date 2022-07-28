@@ -57,4 +57,4 @@ jobs:
           destination-repository-name: "Fastr-Core"
           user-email: "github-action@users.noreply.github.com"
           user-name: "Deploy to Fastr-Core"
-          target-branch: main
+          target-branch: deploy
