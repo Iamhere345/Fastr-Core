@@ -46,7 +46,13 @@ function ArgLib:autocomplete(player, t: {}, target: string)
 	
 	local function getIndex(name: string)
 
-		local index = t[string.lower(name)]
+		local index = nil
+
+		for _,v in t do
+			if v.Name == name then
+				index = v.Name
+			end
+		end
 
 		if index then
 			return index
