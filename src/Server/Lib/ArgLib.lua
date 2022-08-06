@@ -49,8 +49,8 @@ function ArgLib:autocomplete(player, t: {}, target: string)
 		local index = nil
 
 		for _,v in t do
-			if v.Name == name then
-				index = v.Name
+			if v.Name:lower() == name:lower() then
+				index = v
 			end
 		end
 
