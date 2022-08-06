@@ -63,7 +63,7 @@ function ArgLib:autocomplete(player, t: {}, target: string)
 		return getIndex(target)
 	end
 
-	local candidates
+	local candidates = {}
 
 	for k, v in t do
 		if string.match(v.Name:lower(), target) then
