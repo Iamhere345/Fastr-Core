@@ -23,7 +23,7 @@ Fastr is a bloat ware free, lightweight, highly configurable roblox admin system
 #### Installing
 
 #### Using CLI
-- run `foreman install` (if you don't have foreman you can [download it here](https://github.com/Roblox/foreman), or you can use a manually installed version of rojo)
+- run `foreman install` (if you don't have foreman you can [download it here](https://github.com/Roblox/foreman), or you can use a manually installed version of rojo. This is only nessesary if you want to contribute to Fastr)
  - run `rojo serve`
  - connect to the rojo instance in studio using the rojo plugin (if you don't have the rojo plugin use `rojo plugin install`)
 
