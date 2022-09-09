@@ -26,6 +26,7 @@ Some words can be used as arguments. These words are: `all me random others rand
 Flags are similar to arguments; they can modify the behavior of the command and are specified by the user. Flags are do not hold any information (currently), the only information the carry is weather they exist. Flags must be written with a hyphen.
 
 Example: `:command -f`
+Example `:fly -n`
 
 ## Advanced Usage
 
