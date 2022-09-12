@@ -27,7 +27,7 @@ MiscUtils.CompileCommands = function(Root)
 
 			local CommandTable
 
-			s,r = pcall(function()
+			local s,r = pcall(function()
 				CommandTable = require(v)
 			end)
 

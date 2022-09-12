@@ -93,7 +93,7 @@ for _, c in pairs(CmdData) do --we only need the names of the commands for Updat
 	end
 end
 
-uis.InputBegan:Connect(function(key, internallyActed)
+uis.InputEnded:Connect(function(key, internallyActed)
 	local Focus
 
 	if key.KeyCode == Enum.KeyCode.BackSlash and not internallyActed then
@@ -127,7 +127,7 @@ uis.InputBegan:Connect(function(key, internallyActed)
 				CommandBar.Text = ""
 			end
 
-			wait(0.2)
+			task.wait(0.2)
 
 			debounce = false
 		end
